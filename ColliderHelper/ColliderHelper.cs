@@ -330,21 +330,20 @@ namespace ColliderHelper
         {
             if (!_enabled) return;
 
-            if (Input.GetKeyDown(_hotkey))
+            if (!Input.GetKeyDown(_hotkey)) return;
+
+            if (Mouse.HoveredPart != null)
             {
-                if (Mouse.HoveredPart != null)
+                var component = Mouse.HoveredPart.GetComponent<ColliderHelperPart>();
+                component?.CycleState();
+            }
+            else
+            {
+                var components = FindObjectsOfType<ColliderHelperPart>();
+                for (var i = 0; i < components.Length; i++)
                 {
-                    var component = Mouse.HoveredPart.GetComponent<ColliderHelperPart>();
-                    component?.CycleState();
-                }
-                else
-                {
-                    var components = FindObjectsOfType<ColliderHelperPart>();
-                    for (var i = 0; i < components.Length; i++)
-                    {
-                        components[i].SetOff(false);
-                        components[i].PartOpacity = 1.0f;
-                    }
+                    components[i].SetOff(false);
+                    components[i].PartOpacity = 1.0f;
                 }
             }
         }
