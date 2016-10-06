@@ -15,6 +15,10 @@ namespace ColliderHelper
     {
         private RendererState _state = RendererState.Off;
 
+        [KSPField(isPersistant = false, advancedTweakable = true, guiActiveEditor = true, guiActive = false,
+            guiName = "Part Opacity"), UI_FloatRange(minValue = 0.1f, maxValue = 1.0f, stepIncrement = 0.1f)]
+        public float PartOpacity = 1.0f;
+
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
             guiActiveEditor = true, unfocusedRange = 100f, guiName = "Show Collider: Off", active = true,
             advancedTweakable = true, isPersistent = false)]
@@ -112,6 +116,16 @@ namespace ColliderHelper
             _state = RendererState.Off;
 
             Events["ColliderHelperEvent"].guiName = "Show Collider: Off";
+        }
+
+        public void Update()
+        {
+            this.part.SetOpacity(PartOpacity);
+        }
+
+        public void OnDestroy()
+        {
+            this.part.SetOpacity(1.0f);
         }
     }
 }
