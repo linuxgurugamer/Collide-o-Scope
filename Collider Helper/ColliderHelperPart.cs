@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using UnityEngine;
-using KSP.UI.Screens;
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ForCanBeConvertedToForeach
 
@@ -31,6 +25,7 @@ namespace ColliderHelper
 
         public void CycleState()
         {
+            // ReSharper disable once SwitchStatementMissingSomeCases
             switch(_state)
             {
                 case RendererState.Active:
@@ -52,13 +47,7 @@ namespace ColliderHelper
                     // off->on
                     if (this.part.symmetryCounterparts.Count > 0)
                     {
-                        var onCount = 0;
-                        for (var i = 0; i < this.part.symmetryCounterparts.Count; i++)
-                        {
-                            if (this.part.symmetryCounterparts[i].GetComponent<ColliderHelperPart>()._state ==
-                                RendererState.Active)
-                                onCount++;
-                        }
+                        var onCount = this.part.symmetryCounterparts.Count(t => t.GetComponent<ColliderHelperPart>()._state == RendererState.Active);
 
                         if (onCount == this.part.symmetryCounterparts.Count)
                             SetSymmetry(true);
@@ -78,12 +67,11 @@ namespace ColliderHelper
             if (this.gameObject.GetComponent<WireframeComponent>() == null)
                 this.gameObject.AddComponent<WireframeComponent>();
 
-            if (!symmetry)
-            {
-                _state = RendererState.Active;
+            if (symmetry) return;
 
-                Events["ColliderHelperEvent"].guiName = "Show Collider: On";
-            }
+            _state = RendererState.Active;
+
+            Events["ColliderHelperEvent"].guiName = "Show Collider: On";
         }
 
         public void SetSymmetry(bool recursive)
@@ -93,8 +81,8 @@ namespace ColliderHelper
                 for (var i = 0; i < this.part.symmetryCounterparts.Count; i++)
                 {
                     var component = this.part.symmetryCounterparts[i].GetComponent<ColliderHelperPart>();
-                    if (component != null)
-                        component.SetSymmetry(false);
+
+                    component?.SetSymmetry(false);
                 }
             }
 
@@ -112,8 +100,8 @@ namespace ColliderHelper
                 for (var i = 0; i < this.part.symmetryCounterparts.Count; i++)
                 {
                     var helperComponent = this.part.symmetryCounterparts[i].GetComponent<ColliderHelperPart>();
-                    if (helperComponent != null)
-                        helperComponent.SetOff(false);
+
+                    helperComponent?.SetOff(false);
                 }
             }
 

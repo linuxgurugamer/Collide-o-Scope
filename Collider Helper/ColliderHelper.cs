@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using System.Text;
 using UnityEngine;
 using KSP.UI.Screens;
@@ -25,11 +23,9 @@ namespace ColliderHelper
 
         private bool _enabled;
 
-        // ReSharper disable once InconsistentNaming
-        private KeyCode Hotkey = KeyCode.O;
+        private KeyCode _hotkey = KeyCode.O;
 
-        // ReSharper disable once InconsistentNaming
-        private bool DefaultEnabled = true;
+        private bool _defaultEnabled = true;
 
         private static void AddModule(Part p)
         {
@@ -115,6 +111,7 @@ namespace ColliderHelper
 
         public void EditorPartEvent(ConstructionEventType eventType, Part part)
         {
+            // ReSharper disable once SwitchStatementMissingSomeCases
             switch (eventType)
             {
                 case ConstructionEventType.PartAttached:
@@ -136,18 +133,15 @@ namespace ColliderHelper
         {
             if (GameSettings.ADVANCED_TWEAKABLES)
             {
-                Debug.Log("[CH] AT Enabled.");
                 GuiApplicationLauncherReady();
             }
             else
             {
-                Debug.Log("[CH] AT Disabled.");
-                if (_appButton != null)
-                {
-                    _appButton.SetFalse();
-                    ApplicationLauncher.Instance.RemoveModApplication(_appButton);
-                    _appButton = null;
-                }
+                if (_appButton == null) return;
+
+                _appButton.SetFalse();
+                ApplicationLauncher.Instance.RemoveModApplication(_appButton);
+                _appButton = null;
             }
         }
 
@@ -232,8 +226,8 @@ namespace ColliderHelper
                 {
                     try
                     {
-                        Hotkey = (KeyCode) Enum.Parse(typeof (KeyCode), node.GetValue("Hotkey"));
-                        DefaultEnabled = bool.Parse(node.GetValue("DefaultEnabled"));
+                        _hotkey = (KeyCode) Enum.Parse(typeof (KeyCode), node.GetValue("_hotkey"));
+                        _defaultEnabled = bool.Parse(node.GetValue("_defaultEnabled"));
                     }
                     catch
                     {
@@ -254,8 +248,8 @@ namespace ColliderHelper
             var settings = new ConfigNode();
             var node = new ConfigNode {name = "Collider-o-ScopeSettings"};
 
-            node.AddValue("Hotkey", Hotkey);
-            node.AddValue("DefaultEnabled", DefaultEnabled);
+            node.AddValue("_hotkey", _hotkey);
+            node.AddValue("_defaultEnabled", _defaultEnabled);
 
             settings.AddNode(node);
 
@@ -265,24 +259,22 @@ namespace ColliderHelper
         #region App button logic
         public void GuiApplicationLauncherReady()
         {
-            if (GameSettings.ADVANCED_TWEAKABLES)
-            {
-                if (_appButton == null)
-                {
-                    _appButton = ApplicationLauncher.Instance.AddModApplication(
-                        AppTrue, AppFalse,
-                        null, null,
-                        null, null,
-                        ApplicationLauncher.AppScenes.VAB | ApplicationLauncher.AppScenes.SPH |
-                        ApplicationLauncher.AppScenes.FLIGHT,
-                        _offTexture);
+            if (!GameSettings.ADVANCED_TWEAKABLES) return;
 
-                    if (DefaultEnabled)
-                        _appButton.SetTrue();
-                    else
-                        _appButton.SetFalse();
-                }
-            }
+            if (_appButton != null) return;
+
+            _appButton = ApplicationLauncher.Instance.AddModApplication(
+                AppTrue, AppFalse,
+                null, null,
+                null, null,
+                ApplicationLauncher.AppScenes.VAB | ApplicationLauncher.AppScenes.SPH |
+                ApplicationLauncher.AppScenes.FLIGHT,
+                _offTexture);
+
+            if (_defaultEnabled)
+                _appButton.SetTrue();
+            else
+                _appButton.SetFalse();
         }
 
         public void AppTrue()
@@ -328,8 +320,7 @@ namespace ColliderHelper
         {
             LoadSettings(SettingsURL);
 
-            //if (GameSettings.ADVANCED_TWEAKABLES)
-                GameEvents.onGUIApplicationLauncherReady.Add(GuiApplicationLauncherReady);
+            GameEvents.onGUIApplicationLauncherReady.Add(GuiApplicationLauncherReady);
 
             GameEvents.OnGameSettingsApplied.Add(SettingsApplied);
 
@@ -339,13 +330,12 @@ namespace ColliderHelper
         {
             if (!_enabled) return;
 
-            if (Input.GetKeyDown(Hotkey))
+            if (Input.GetKeyDown(_hotkey))
             {
                 if (Mouse.HoveredPart != null)
                 {
                     var component = Mouse.HoveredPart.GetComponent<ColliderHelperPart>();
-                    if (component != null)
-                        component.CycleState();
+                    component?.CycleState();
                 }
                 else
                 {
@@ -373,8 +363,7 @@ namespace ColliderHelper
                 _appButton = null;
             }
 
-            //if(GameSettings.ADVANCED_TWEAKABLES)
-                GameEvents.onGUIApplicationLauncherReady.Remove(GuiApplicationLauncherReady);
+            GameEvents.onGUIApplicationLauncherReady.Remove(GuiApplicationLauncherReady);
 
             GameEvents.OnGameSettingsApplied.Remove(SettingsApplied);
 

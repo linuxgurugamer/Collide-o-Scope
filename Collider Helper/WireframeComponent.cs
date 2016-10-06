@@ -1,5 +1,6 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
+// ReSharper disable ArrangeThisQualifier
+// ReSharper disable ForCanBeConvertedToForeach
 
 namespace ColliderHelper
 {
@@ -14,27 +15,6 @@ namespace ColliderHelper
                 if (MapView.MapIsEnabled || (CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.IVA))
                     return;
             }
-
-            //var camera = DrawTools.GetActiveCam();
-
-            //if (camera.tag != "MainCamera")
-            //    return;
-
-            //if (!GeometryUtility.TestPlanesAABB(GeometryUtility.CalculateFrustumPlanes(camera),
-            //        this.gameObject.GetRendererBounds()))
-            //    return;
-
-            //if (this.gameObject.GetRendererBounds().Contains(camera.transform.position))
-            //    return;
-
-            //var distance = this.gameObject.GetRendererBounds().SqrDistance(camera.transform.position);
-            //Debug.Log("[CH] Distance: " + distance);
-
-            //var Mat = this.gameObject.GetComponent<MeshRenderer>();
-            //if (Mat != null)
-            //{
-            //    Mat.material.color.A(0.5f);
-            //}
 
             DrawObjects(this.gameObject);
         }
@@ -88,17 +68,6 @@ namespace ColliderHelper
                     WheelHit wheelHit;
                     if (wheel.GetGroundHit(out wheelHit))
                     {
-                        //RaycastHit hit;
-                        //Physics.Raycast(wheel.transform.position, -wheel.transform.up, out hit);
-                        //var hitlag = (wheelHit.point - hit.point);
-                        //Debug.Log("Lagging " + hitlag.magnitude + " Deltatime " + Time.deltaTime);
-
-                        //wheelHit.point = wheelHit.point + FlightGlobals.ActiveVessel.srf_velocity * Time.deltaTime;
-
-                        //hitlag = wheelHit.point - hit.point;
-                        //Debug.Log("Lagging " + hitlag.magnitude + " velocity = " +
-                        //          FlightGlobals.ActiveVessel.srf_velocity * Time.deltaTime);
-
                         pos = wheelHit.point + (wheel.transform.up * wheel.radius);
                     }
                     else
@@ -110,12 +79,6 @@ namespace ColliderHelper
                 }
             }
 
-            //MeshFilter[] meshes = go.GetComponents<MeshFilter>();
-            //for (var i = 0; i < meshes.Length; i++)
-            //{
-            //    DrawTools.DrawLocalMesh(meshes[i].transform, meshes[i].sharedMesh, XKCDColors.Orange);
-            //}
-
             for (var i = 0; i < go.transform.childCount; i++)
             {
                 var child = go.transform.GetChild(i).gameObject;
@@ -124,17 +87,5 @@ namespace ColliderHelper
                     DrawObjects(child);
             }
         }
-
-        //private GameObject FindParentWithComponent(Type component)
-        //{
-        //    var parent = this.gameObject;
-        //    while (parent != null)
-        //    {
-        //        if (parent.GetComponentUpwards<ModuleWheelBase>())
-        //        {
-                    
-        //        }
-        //    }
-        //}
     }
 }

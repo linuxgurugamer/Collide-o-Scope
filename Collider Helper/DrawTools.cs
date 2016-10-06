@@ -1,5 +1,5 @@
 ﻿/*
- * Code from this file used with license permission below. Bug fixes by DefiantZombie.
+ * Code from this file used with license permission below. Fixes by DefiantZombie.
  */
 
 /*
@@ -35,22 +35,15 @@ namespace ColliderHelper
 
         public static float NearPlane = 0f;
 
-        private static Material material
-        {
-            get
-            {
-                if (_material == null)
-                    _material = new Material(Shader.Find("Particles/Alpha Blended"));
-
-                return _material;
-            }
-        }
+        // ReSharper disable once InconsistentNaming
+        private static Material material => _material ?? (_material = new Material(Shader.Find("Particles/Alpha Blended")));
 
         public static void NewFrame()
         {
             _glDepth = 0;
         }
 
+        // ReSharper disable once InconsistentNaming
         private static void GLStart()
         {
             if (_glDepth == 0)
@@ -63,6 +56,7 @@ namespace ColliderHelper
             _glDepth++;
         }
 
+        // ReSharper disable once InconsistentNaming
         private static void GLEnd()
         {
             _glDepth--;
@@ -231,7 +225,7 @@ namespace ColliderHelper
 
         public static void DrawLocalMesh(Transform transform, Mesh mesh, Color color)
         {
-            if (mesh == null || mesh.triangles == null || mesh.vertices == null)
+            if (mesh?.triangles == null || mesh.vertices == null)
                 return;
 
             var triangles = mesh.triangles;
