@@ -343,6 +343,7 @@ namespace ColliderHelper
                     for (var i = 0; i < components.Length; i++)
                     {
                         components[i].SetOff(false);
+                        components[i].PartOpacity = 1.0f;
                     }
                 }
             }
