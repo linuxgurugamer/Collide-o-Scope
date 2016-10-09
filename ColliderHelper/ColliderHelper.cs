@@ -13,11 +13,11 @@ namespace ColliderHelper
     public class ColliderHelper : MonoBehaviour
     {
         // ReSharper disable once InconsistentNaming
-        private const string SettingsURL = "GameData/Collider-o-Scope/settings.cfg";
+        private const string SettingsURL = "GameData/Collide-o-Scope/settings.cfg";
 
         private static ApplicationLauncherButton _appButton;
-        private readonly Texture2D _offTexture = GameDatabase.Instance.GetTexture("Collider-o-Scope/Icons/AppIconOff_38", false);
-        private readonly Texture2D _onTexture = GameDatabase.Instance.GetTexture("Collider-o-Scope/Icons/AppIconOn_38", false);
+        private readonly Texture2D _offTexture = GameDatabase.Instance.GetTexture("Collide-o-Scope/Icons/AppIconOff_38", false);
+        private readonly Texture2D _onTexture = GameDatabase.Instance.GetTexture("Collide-o-Scope/Icons/AppIconOn_38", false);
 
         private static StringBuilder _sb = new StringBuilder();
 
@@ -217,7 +217,7 @@ namespace ColliderHelper
             {
                 var settings = ConfigNode.Load(KSPUtil.ApplicationRootPath + url);
 
-                foreach (var node in settings.GetNodes("Collider-o-ScopeSettings"))
+                foreach (var node in settings.GetNodes("Collide-o-ScopeSettings"))
                 {
                     try
                     {
@@ -241,14 +241,14 @@ namespace ColliderHelper
         private void SaveSettings(string url)
         {
             var settings = new ConfigNode();
-            var node = new ConfigNode {name = "Collider-o-ScopeSettings"};
+            var node = new ConfigNode {name = "Collide-o-ScopeSettings"};
 
             node.AddValue("_hotkey", _hotkey);
             node.AddValue("_defaultEnabled", _defaultEnabled);
 
             settings.AddNode(node);
 
-            settings.Save(KSPUtil.ApplicationRootPath + url, "Collider-o-Scope Settings");
+            settings.Save(KSPUtil.ApplicationRootPath + url, "Collide-o-Scope Settings");
         }
 
         #region App button logic

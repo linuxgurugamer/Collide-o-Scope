@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ColliderHelper</RootNamespace>
-    <AssemblyName>Collider-o-Scope</AssemblyName>
+    <AssemblyName>Collide-o-Scope</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -73,8 +73,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>call xcopy /Y "$(TargetPath)" "$(SolutionDir)Resources\GameData\Collider-o-Scope\"
-call xcopy /Y "$(TargetPath)" "$(SolutionDir)..\..\..\..\KSP\1.2\Mod Dev\GameData\Collider-o-Scope\"</PostBuildEvent>
+    <PostBuildEvent>call xcopy /Y "$(TargetPath)" "$(SolutionDir)Resources\GameData\Collide-o-Scope\"
+call xcopy /Y "$(TargetPath)" "$(SolutionDir)..\..\..\..\KSP\1.2\Mod Dev\GameData\Collide-o-Scope\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

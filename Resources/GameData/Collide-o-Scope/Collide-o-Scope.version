@@ -1,8 +1,8 @@
 {
-  "NAME":"Collider-o-Scope",
+  "NAME":"Collide-o-Scope",
   "URL":"http://ksp-avc.cybutek.net/version.php?id=356",
-  "DOWNLOAD":"https://github.com/DefiantZombie/Collider-o-Scope/releases/download/v1.0.0/Collider-o-Scope-v1.0.0.zip",
-  "CHANGE_LOG_URL":"https://raw.githubusercontent.com/DefiantZombie/Collider-o-Scope/master/changelog.txt",
+  "DOWNLOAD":"https://github.com/DefiantZombie/Collide-o-Scope/releases/download/v1.0.0/Collide-o-Scope-v1.0.0.zip",
+  "CHANGE_LOG_URL":"https://raw.githubusercontent.com/DefiantZombie/Collide-o-Scope/master/changelog.txt",
   "VERSION":
   {
     "MAJOR":1,

@@ -1,10 +1,10 @@
-Collider-o-Scope! has one job: Assist with the creation of Kraken devices.
+Collide-o-Scope has one job: Assist with the creation of Kraken devices.
 
 == Installation ==
-Copy the Collider-o-Scope! folder into your KSP/GameData folder.
+Copy the Collide-o-Scope folder into your KSP/GameData folder.
 
 == Usage ==
-Collider-o-Scope! is an advanced tweakable. As such your game will need Advanced Tweakables enabled. There are several places to check this:
+Collide-o-Scope is an advanced tweakable. As such your game will need Advanced Tweakables enabled. There are several places to check this:
 
 1. From the main menu go to Settings->General. Note: This will not change the option for games in progress.
 2. From the space center or flight scenes press Escape and choose Settings. It will be under the Gameplay section.
