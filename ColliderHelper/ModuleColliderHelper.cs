@@ -11,7 +11,7 @@ namespace ColliderHelper
         Off
     }
 
-    public class ColliderHelperPart : PartModule
+    public class ModuleColliderHelper : PartModule
     {
         private RendererState _state = RendererState.Off;
 
@@ -51,7 +51,7 @@ namespace ColliderHelper
                     // off->on
                     if (this.part.symmetryCounterparts.Count > 0)
                     {
-                        var onCount = this.part.symmetryCounterparts.Count(t => t.GetComponent<ColliderHelperPart>()._state == RendererState.Active);
+                        var onCount = this.part.symmetryCounterparts.Count(t => t.GetComponent<ModuleColliderHelper>()._state == RendererState.Active);
 
                         if (onCount == this.part.symmetryCounterparts.Count)
                             SetSymmetry(true);
@@ -84,7 +84,7 @@ namespace ColliderHelper
             {
                 for (var i = 0; i < this.part.symmetryCounterparts.Count; i++)
                 {
-                    var component = this.part.symmetryCounterparts[i].GetComponent<ColliderHelperPart>();
+                    var component = this.part.symmetryCounterparts[i].GetComponent<ModuleColliderHelper>();
 
                     component?.SetSymmetry(false);
                 }
@@ -103,7 +103,7 @@ namespace ColliderHelper
             {
                 for (var i = 0; i < this.part.symmetryCounterparts.Count; i++)
                 {
-                    var helperComponent = this.part.symmetryCounterparts[i].GetComponent<ColliderHelperPart>();
+                    var helperComponent = this.part.symmetryCounterparts[i].GetComponent<ModuleColliderHelper>();
 
                     helperComponent?.SetOff(false);
                 }

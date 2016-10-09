@@ -29,7 +29,7 @@ namespace ColliderHelper
 
         private static void AddModule(Part p)
         {
-            if (!p.Modules.Contains<ColliderHelperPart>())
+            if (!p.Modules.Contains<ModuleColliderHelper>())
             {
                 p.AddModule("ColliderHelperPart");
             }
@@ -37,7 +37,7 @@ namespace ColliderHelper
 
         private static void RemoveModule(Part p)
         {
-            var modules = p.Modules.GetModules<ColliderHelperPart>();
+            var modules = p.Modules.GetModules<ModuleColliderHelper>();
             for (var i = 0; i < modules.Count; i++)
             {
                 modules[i].SetOff(false);
@@ -68,7 +68,7 @@ namespace ColliderHelper
 
         private static void RemoveModules()
         {
-            var components = FindObjectsOfType<ColliderHelperPart>();
+            var components = FindObjectsOfType<ModuleColliderHelper>();
             for (var i = 0; i < components.Length; i++)
             {
                 RemoveModule(components[i].part);
@@ -329,12 +329,12 @@ namespace ColliderHelper
 
             if (Mouse.HoveredPart != null)
             {
-                var component = Mouse.HoveredPart.GetComponent<ColliderHelperPart>();
+                var component = Mouse.HoveredPart.GetComponent<ModuleColliderHelper>();
                 component?.CycleState();
             }
             else
             {
-                var components = FindObjectsOfType<ColliderHelperPart>();
+                var components = FindObjectsOfType<ModuleColliderHelper>();
                 for (var i = 0; i < components.Length; i++)
                 {
                     components[i].SetOff(false);
