@@ -78,31 +78,26 @@ namespace ColliderHelper
         #region Good events
         public void EditorStarted()
         {
-            Debug.Log("[CH] EditorStarted()");
             AddModules();
         }
 
         public void VesselLoaded(Vessel v)
         {
-            Debug.Log("[CH] VesselLoaded()");
             AddModules();
         }
 
         public void FlightReady()
         {
-            Debug.Log("[CH] FlightReady()");
             AddModules();
         }
 
         public void CrewOnEva(GameEvents.FromToAction<Part, Part> fta)
         {
-            Debug.Log("[CH] CrewOnEva()");
             AddModule(fta.to);
         }
 
         public void FlagPlant(Vessel v)
         {
-            Debug.Log("[CH] FlagPlant()");
             for (var i = 0; i < v.Parts.Count; i++)
             {
                 AddModule(v.Parts[i]);
