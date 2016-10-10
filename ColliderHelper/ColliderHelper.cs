@@ -35,7 +35,7 @@ namespace ColliderHelper
         {
             if (!p.Modules.Contains<ModuleColliderHelper>())
             {
-                p.AddModule("ColliderHelperPart");
+                p.AddModule("ModuleColliderHelper");
             }
         }
 
