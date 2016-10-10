@@ -73,8 +73,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>call xcopy /Y "$(TargetPath)" "$(SolutionDir)Resources\GameData\Collide-o-Scope\"
-call xcopy /Y "$(TargetPath)" "$(SolutionDir)..\..\..\..\KSP\1.2\Mod Dev\GameData\Collide-o-Scope\"</PostBuildEvent>
+    <PostBuildEvent>call xcopy /Y "$(TargetPath)" "E:\KSP\1.2\Mod Dev\GameData\Collide-o-Scope\"
+if $(ConfigurationName) == Release call xcopy /Y "$(TargetPath)" "$(SolutionDir)Resources\GameData\Collide-o-Scope\"
+if $(ConfigurationName) == Debug call "E:\Development\Utilities\pdb2mdb\pdb2mdb.exe" "$(TargetFileName)"
+if $(ConfigurationName) == Debug call xcopy /Y "$(TargetDir)$(TargetName).pdb" "E:\KSP\1.2\Mod Dev\GameData\Collide-o-Scope\"
+if $(ConfigurationName) == Debug call xcopy /Y "$(TargetDir)$(TargetName).dll.mdb" "E:\KSP\1.2\Mod Dev\GameData\Collide-o-Scope\"
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

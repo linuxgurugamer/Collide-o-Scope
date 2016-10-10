@@ -1,4 +1,8 @@
-﻿using System;
+﻿#if DEBUG
+#define ENABLE_PROFILER
+#define DEVELOPMENT
+#endif
+using System;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
@@ -75,7 +79,6 @@ namespace ColliderHelper
             }
         }
 
-        #region Good events
         public void EditorStarted()
         {
             AddModules();
@@ -140,9 +143,6 @@ namespace ColliderHelper
             }
         }
 
-        #endregion
-
-        #region DumpGameObject
         public static void DumpGameObjectChilds(GameObject go, string pre)
         {
             _sb = new StringBuilder();
@@ -203,7 +203,6 @@ namespace ColliderHelper
                 writer.WriteLine(sb.ToString());
             }
         }
-        #endregion
 
         private void LoadSettings(string url)
         {
@@ -251,7 +250,6 @@ namespace ColliderHelper
             settings.Save(KSPUtil.ApplicationRootPath + url, "Collide-o-Scope Settings");
         }
 
-        #region App button logic
         public void GuiApplicationLauncherReady()
         {
             if (!GameSettings.ADVANCED_TWEAKABLES) return;
@@ -298,7 +296,6 @@ namespace ColliderHelper
 
             _appButton.SetTexture(_offTexture);
         }
-        #endregion
 
         private void CleanupHooks()
         {
@@ -310,7 +307,6 @@ namespace ColliderHelper
             GameEvents.onVesselLoaded.Remove(VesselLoaded);
         }
 
-        #region Unity
         public void Awake()
         {
             LoadSettings(SettingsURL);
@@ -366,6 +362,5 @@ namespace ColliderHelper
 
             SaveSettings(SettingsURL);
         }
-        #endregion
     }
 }
