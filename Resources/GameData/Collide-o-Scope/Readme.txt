@@ -23,6 +23,13 @@ To turn off all colliders at once move your mouse cursor so that no part is unde
 
 - Any craft and save game written with the application active (green) will have minor amounts of information written to them. This is a KSP thing that cannot be worked around. There is no effect other than warnings in the log when these files are reloaded. Don't panic, I just want everyone to know this happens and that I looked into having it not occur.
 
+== Special Thanks ==
+
+- Squad for the awesomeness that is Kerbal Space Program.
+- DasValdez for always being inspiring and classy.
+- Muddr for for always being inspiring and bug testing.
+- EJ_SA for always being inspiring and keeping those eyes hidden.
+
 == Changelog ==
 See changelog.txt
 
