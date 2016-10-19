@@ -328,9 +328,8 @@ namespace ColliderHelper
             if (!Input.GetKeyDown(_hotkey)) return;
 
             var comp = EventSystem.current.currentSelectedGameObject?.GetComponent<TMP_InputField>();
-
-            if (comp != null && comp.isFocused)
-                return;
+            if (comp == null ? false : comp.isFocused)
+                    return;
 
             if (Mouse.HoveredPart != null)
             {

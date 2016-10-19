@@ -13,5 +13,5 @@
 * Verify Github master matches local master
 * Create release tag and push to Github
 * Update Github release info and add binary
-* Update AVC information on [KSP AVC Online](https://ksp-avc.cybutek.net/?page=My_Versions)
+* Update AVC information on [KSP AVC Online](http://ksp-avc.cybutek.net/?page=My_Versions)
 * Post update in the forum thread [KSP Forums](http://forum.kerbalspaceprogram.com/index.php?/topic/149706-12-collide-o-scope-v100/)
