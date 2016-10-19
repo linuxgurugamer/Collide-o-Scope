@@ -5,8 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using KSP.UI.Screens;
+
 using StreamWriter = System.IO.StreamWriter;
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ForCanBeConvertedToForeach
@@ -322,6 +326,11 @@ namespace ColliderHelper
             if (!_enabled) return;
 
             if (!Input.GetKeyDown(_hotkey)) return;
+
+            var comp = EventSystem.current.currentSelectedGameObject?.GetComponent<TMP_InputField>();
+
+            if (comp != null && comp.isFocused)
+                return;
 
             if (Mouse.HoveredPart != null)
             {

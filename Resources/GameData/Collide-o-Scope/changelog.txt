@@ -1,2 +1,4 @@
+1.0.1.0
+    Fixed hotkey activating when typing in text fields. (Fixes: #1)
 1.0.0.0
     Initial release of Collide-o-Scope.
