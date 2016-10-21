@@ -35,12 +35,13 @@ namespace ColliderHelper
 
         private bool _defaultEnabled = true;
 
-        private static void AddModule(Part p)
+        private static ModuleColliderHelper AddModule(Part p)
         {
             if (!p.Modules.Contains<ModuleColliderHelper>())
             {
-                p.AddModule("ModuleColliderHelper");
+                return p.AddModule("ModuleColliderHelper") as ModuleColliderHelper;
             }
+            return p.Modules.GetModule<ModuleColliderHelper>();
         }
 
         private static void RemoveModule(Part p)
@@ -120,6 +121,13 @@ namespace ColliderHelper
                 case ConstructionEventType.PartCreated:
                 case ConstructionEventType.PartTweaked:
                     AddModule(part);
+                    if (part.symmetryCounterparts.Count > 0)
+                    {
+                        foreach (var p in part.symmetryCounterparts)
+                        {
+                            AddModule(p);
+                        }
+                    }
                     break;
 
                 case ConstructionEventType.PartCopied:
@@ -320,21 +328,22 @@ namespace ColliderHelper
             GameEvents.OnGameSettingsApplied.Add(SettingsApplied);
 
         }
-
+        
         public void Update()
         {
             if (!_enabled) return;
 
             if (!Input.GetKeyDown(_hotkey)) return;
 
-            var comp = EventSystem.current.currentSelectedGameObject?.GetComponent<TMP_InputField>();
-            if (comp == null ? false : comp.isFocused)
-                    return;
+            // TODO: Enable when KSP UI fixed
+            //var comp = EventSystem.current.currentSelectedGameObject?.GetComponent<TMP_InputField>();
+            //if (comp == null ? false : comp.isFocused)
+            //        return;
 
             if (Mouse.HoveredPart != null)
             {
-                var component = Mouse.HoveredPart.GetComponent<ModuleColliderHelper>();
-                component?.CycleState();
+                var component = Mouse.HoveredPart.GetComponent<ModuleColliderHelper>() ?? AddModule(Mouse.HoveredPart);
+                component.CycleState();
             }
             else
             {
@@ -355,7 +364,6 @@ namespace ColliderHelper
 
         public void OnDestroy()
         {
-            Debug.Log("[CH] OnDestroy()");
             if (_appButton != null)
             {
                 ApplicationLauncher.Instance.RemoveModApplication(_appButton);
