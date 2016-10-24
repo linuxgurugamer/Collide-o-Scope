@@ -1,3 +1,5 @@
+1.0.4.0
+    Removed opacity tweakable. It was causing lights to be broken.
 1.0.3.0
     Disabled hotkey changes made in v1.0.2.0 and v1.0.1.0 due to KSP UI issue
     Added some robustness
