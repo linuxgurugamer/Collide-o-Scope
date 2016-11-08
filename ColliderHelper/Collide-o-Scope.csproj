@@ -69,6 +69,7 @@
     <Compile Include="ModuleColliderHelper.cs" />
     <Compile Include="DrawTools.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThrustArrowComponent.cs" />
     <Compile Include="WireframeComponent.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

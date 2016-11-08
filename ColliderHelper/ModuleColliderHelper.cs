@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable ForCanBeConvertedToForeach
 
@@ -14,6 +16,9 @@ namespace ColliderHelper
     public class ModuleColliderHelper : PartModule
     {
         private RendererState _state = RendererState.Off;
+
+        [SerializeField]
+        private List<ThrustArrowComponent> _thrustArrows;
 
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
             guiActiveEditor = true, unfocusedRange = 100f, guiName = "Show Collider: Off", active = true,
@@ -67,6 +72,23 @@ namespace ColliderHelper
             if (this.gameObject.GetComponent<WireframeComponent>() == null)
                 this.gameObject.AddComponent<WireframeComponent>();
 
+            if (_thrustArrows == null)
+            {
+                ModuleEngines engineMod;
+                if (FindEngineModule(this.gameObject, out engineMod))
+                {
+                    _thrustArrows = new List<ThrustArrowComponent>();
+
+                    for (var i = 0; i < engineMod.thrustTransforms.Count; i++)
+                    {
+                        var go = new GameObject("Thrust Transform Arrow Renderer");
+                        go.transform.parent = engineMod.thrustTransforms[i].transform;
+                        go.transform.localPosition = Vector3.zero;
+                        _thrustArrows.Add(go.AddComponent<ThrustArrowComponent>());
+                    }
+                }
+            }
+
             if (symmetry) return;
 
             _state = RendererState.Active;
@@ -109,9 +131,45 @@ namespace ColliderHelper
             if (renderComponent != null)
                 Destroy(renderComponent);
 
+            if (_thrustArrows != null)
+            {
+                for (var i = 0; i < _thrustArrows.Count; i++)
+                {
+                    DestroyImmediate(_thrustArrows[i].gameObject);
+                }
+                _thrustArrows = null;
+            }
+
             _state = RendererState.Off;
 
             Events["ColliderHelperEvent"].guiName = "Show Collider: Off";
+        }
+
+        private bool FindEngineModule(GameObject go, out ModuleEngines mod)
+        {
+            var engineMod = go.GetComponent<ModuleEngines>();
+            if (engineMod != null)
+            {
+                mod = engineMod;
+                return true;
+            }
+
+            for (var i = 0; i < go.transform.childCount; i++)
+            {
+                var found = false;
+                var child = go.transform.GetChild(i).gameObject;
+
+                if (!child.GetComponent<Part>())
+                    found = FindEngineModule(child, out engineMod);
+
+                if (!found) continue;
+
+                mod = engineMod;
+                return true;
+            }
+
+            mod = null;
+            return false;
         }
     }
 }
