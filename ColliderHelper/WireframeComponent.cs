@@ -6,8 +6,6 @@ namespace ColliderHelper
 {
     public class WireframeComponent : MonoBehaviour
     {
-        private string _thrustVectorTransformName = "";
-
         public void OnRenderObject()
         {
             if (HighLogic.LoadedSceneIsFlight)
@@ -25,10 +23,12 @@ namespace ColliderHelper
 
             var engineMod = go.GetComponent<ModuleEngines>();
             if (engineMod != null)
-                _thrustVectorTransformName = engineMod.thrustVectorTransformName;
-
-            if (go.name == _thrustVectorTransformName)
-                DrawTools.DrawTransform(go.transform, 0.3f);
+            {
+                for (var i = 0; i < engineMod.thrustTransforms.Count; i++)
+                {
+                    DrawTools.DrawTransform(engineMod.thrustTransforms[i], 0.3f);
+                }
+            }
 
             for (var i = 0; i < comp.Length; i++)
             {
