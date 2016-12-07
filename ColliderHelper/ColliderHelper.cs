@@ -319,6 +319,34 @@ namespace ColliderHelper
             GameEvents.onVesselLoaded.Remove(VesselLoaded);
         }
 
+        private static bool _flightMarkersEnabled = false;
+
+        public static void ToggleFlightMarkers(Vessel vessel)
+        {
+            if (HighLogic.LoadedScene == GameScenes.FLIGHT)
+            {
+                _flightMarkersEnabled = !_flightMarkersEnabled;
+
+                if (_flightMarkersEnabled)
+                {
+                    if (!vessel.rootPart.Modules.Contains<ModuleFlightMarkers>())
+                    {
+                        vessel.rootPart.AddModule("ModuleFlightMarkers");
+                    }
+                    Debug.Log("Flight markers enabled.");
+                }
+                else
+                {
+                    var modules = vessel.rootPart.Modules.GetModules<ModuleFlightMarkers>();
+                    for (var i = 0; i < modules.Count; i++)
+                    {
+                        vessel.rootPart.RemoveModule(modules[i]);
+                    }
+                    Debug.Log("Flight markers disabled.");
+                }
+            }
+        }
+
         public void Awake()
         {
             LoadSettings(SettingsURL);

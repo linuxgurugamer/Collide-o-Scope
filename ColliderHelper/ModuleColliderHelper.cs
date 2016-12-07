@@ -20,6 +20,14 @@ namespace ColliderHelper
         [SerializeField]
         private List<ThrustArrowComponent> _thrustArrows;
 
+        [KSPEvent(guiActive = true, advancedTweakable = true, guiActiveUnfocused = true, guiActiveUncommand = true,
+            externalToEVAOnly = false, guiActiveEditor = false, unfocusedRange = 100f, guiName = "Toggle CoL/M",
+            active = true, isPersistent = false)]
+        public void ToggleFlightMarkers()
+        {
+            ColliderHelper.ToggleFlightMarkers(this.vessel);
+        }
+
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
             guiActiveEditor = true, unfocusedRange = 100f, guiName = "Show Collider: Off", active = true,
             advancedTweakable = true, isPersistent = false)]
