@@ -29,22 +29,6 @@ namespace ColliderHelper
             return com / mass;
         }
 
-        private static Vector3 FindCenterOfMass(Vessel v)
-        {
-            var com = Vector3.zero;
-            var mass = 0f;
-
-            for (var i = 0; i < v.parts.Count; i++)
-            {
-                var p = v.parts[i];
-
-                if (p.physicalSignificance == Part.PhysicalSignificance.FULL)
-                {
-                    
-                }
-            }
-        }
-
         // KSP implimentation
         private static Vector3 FindCenterOfMass(Part root)
         {
@@ -137,6 +121,25 @@ namespace ColliderHelper
             }
         }
 
+        // Me
+        private static Vector3 FindCenterOfMass(Vessel v)
+        {
+            var com = Vector3.zero;
+            var mass = 0f;
+
+            for (var i = 0; i < v.parts.Count; i++)
+            {
+                var p = v.parts[i];
+                if (p.physicalSignificance == Part.PhysicalSignificance.FULL)
+                {
+                    com += (p.transform.position + p.transform.rotation * p.CoMOffset) * (p.mass + p.GetResourceMass());
+                    mass += p.mass + p.GetResourceMass();
+                }
+            }
+
+            return com / mass;
+        }
+
         private GameObject _markerObject = new GameObject("Flight Markers");
 
         public void Start()
@@ -177,8 +180,12 @@ namespace ColliderHelper
                 }
             }
 
-            DrawTools.DrawSphere(_markerObject.transform.TransformPoint(_markerObject.transform.position),
-                XKCDColors.Yellow, 1f);
+            //DrawTools.DrawSphere(FindCenterOfMass(_craft.rootPart), XKCDColors.Red);
+            //DrawTools.DrawSphere(_markerObject.transform.TransformVector(CalcCenterOfMass(_craft)), XKCDColors.Green, 0.75f);
+            DrawTools.DrawSphere(FindCenterOfMass(_craft), XKCDColors.Yellow);
+            DrawTools.DrawSphere(FindCenterOfLift(_craft).origin, XKCDColors.Blue, 0.75f);
+            //DrawTools.DrawSphere(_markerObject.transform.TransformPoint(_markerObject.transform.position),
+            //    XKCDColors.Yellow, 1f);
         }
 
         public void OnDestroy()
