@@ -35,6 +35,8 @@ namespace ColliderHelper
 
         private bool _defaultEnabled = true;
 
+        private static bool _flightMarkersEnabled = false;
+
         private static ModuleColliderHelper AddModule(Part p)
         {
             if (!p.Modules.Contains<ModuleColliderHelper>())
@@ -304,6 +306,8 @@ namespace ColliderHelper
 
             RemoveModules();
 
+            RemoveFlightMarkers();
+
             CleanupHooks();
 
             _appButton.SetTexture(_offTexture);
@@ -319,32 +323,37 @@ namespace ColliderHelper
             GameEvents.onVesselLoaded.Remove(VesselLoaded);
         }
 
-        private static bool _flightMarkersEnabled = false;
-
-        public static void ToggleFlightMarkers(Vessel vessel)
+        public static bool ToggleFlightMarkers(Vessel vessel)
         {
-            if (HighLogic.LoadedScene == GameScenes.FLIGHT)
-            {
-                _flightMarkersEnabled = !_flightMarkersEnabled;
+            if (HighLogic.LoadedScene != GameScenes.FLIGHT) return false;
 
-                if (_flightMarkersEnabled)
+            _flightMarkersEnabled = !_flightMarkersEnabled;
+
+            if (_flightMarkersEnabled)
+            {
+                vessel.gameObject.AddOrGetComponent<FlightMarkersComponent>();
+            }
+            else
+            {
+                var components = vessel.gameObject.GetComponents<FlightMarkersComponent>();
+                for (var i = 0; i < components.Length; i++)
                 {
-                    if (!vessel.rootPart.Modules.Contains<ModuleFlightMarkers>())
-                    {
-                        vessel.rootPart.AddModule("ModuleFlightMarkers");
-                    }
-                    Debug.Log("Flight markers enabled.");
-                }
-                else
-                {
-                    var modules = vessel.rootPart.Modules.GetModules<ModuleFlightMarkers>();
-                    for (var i = 0; i < modules.Count; i++)
-                    {
-                        vessel.rootPart.RemoveModule(modules[i]);
-                    }
-                    Debug.Log("Flight markers disabled.");
+                    Destroy(components[i]);
                 }
             }
+
+            return _flightMarkersEnabled;
+        }
+
+        private static void RemoveFlightMarkers()
+        {
+            var components = GameObject.FindObjectsOfType<FlightMarkersComponent>();
+            for (var i = 0; i < components.Length; i++)
+            {
+                Destroy(components[i]);
+            }
+
+            _flightMarkersEnabled = false;
         }
 
         public void Awake()

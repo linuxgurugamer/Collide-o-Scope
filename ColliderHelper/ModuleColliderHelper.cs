@@ -21,11 +21,13 @@ namespace ColliderHelper
         private List<ThrustArrowComponent> _thrustArrows;
 
         [KSPEvent(guiActive = true, advancedTweakable = true, guiActiveUnfocused = true, guiActiveUncommand = true,
-            externalToEVAOnly = false, guiActiveEditor = false, unfocusedRange = 100f, guiName = "Toggle CoL/M",
+            externalToEVAOnly = false, guiActiveEditor = false, unfocusedRange = 100f, guiName = "Flight Markers: Off",
             active = true, isPersistent = false)]
         public void ToggleFlightMarkers()
         {
-            ColliderHelper.ToggleFlightMarkers(this.vessel);
+            var markersEnabled = ColliderHelper.ToggleFlightMarkers(this.vessel);
+
+            Events["ToggleFlightMarkers"].guiName = markersEnabled ? "Flight Markers: On" : "Flight Markers: Off";
         }
 
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
