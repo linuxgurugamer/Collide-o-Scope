@@ -125,12 +125,20 @@ namespace ColliderHelper
             DrawTools.DrawSphere(centerOfMass, new Color(1.0f, 0.818f, 0.0f, 0.498f));
 
             var centerOfLift = FindCenterOfLift(_craft);
-            DrawTools.DrawSphere(centerOfLift.origin, new Color(0.0f, 0.916f, 1.0f, 0.498f), 0.9f);
-            DrawTools.DrawArrow(centerOfLift.origin, centerOfLift.direction*4f, new Color(0.0f, 0.916f, 1.0f, 0.498f));
+            if (centerOfLift.direction != Vector3.zero)
+            {
+                DrawTools.DrawSphere(centerOfLift.origin, new Color(0.0f, 0.916f, 1.0f, 0.498f), 0.9f);
+                DrawTools.DrawArrow(centerOfLift.origin, centerOfLift.direction*4f,
+                    new Color(0.0f, 0.916f, 1.0f, 0.498f));
+            }
 
             var centerOfThrust = FindCenterOfThrust(_craft);
-            DrawTools.DrawSphere(centerOfThrust.origin, new Color(1.0f, 0.0f, 0.986f, 0.498f), 0.95f);
-            DrawTools.DrawArrow(centerOfThrust.origin, centerOfThrust.direction*4f, new Color(1.0f, 0.0f, 0.986f, 0.498f));
+            if (centerOfThrust.direction != Vector3.zero)
+            {
+                DrawTools.DrawSphere(centerOfThrust.origin, new Color(1.0f, 0.0f, 0.986f, 0.498f), 0.95f);
+                DrawTools.DrawArrow(centerOfThrust.origin, centerOfThrust.direction*4f,
+                    new Color(1.0f, 0.0f, 0.986f, 0.498f));
+            }
         }
     }
 }
