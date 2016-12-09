@@ -28,6 +28,7 @@ To turn off all colliders at once move your mouse cursor so that no part is unde
 - Squad for the awesomeness that is Kerbal Space Program.
 - DasValdez for always being inspiring and classy.
 - Muddr for for always being inspiring and bug testing.
+- Pyreliter for the mod name.
 - EJ_SA for always being inspiring and keeping those eyes hidden.
 
 == Changelog ==

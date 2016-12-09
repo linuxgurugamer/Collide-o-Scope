@@ -10,7 +10,7 @@ namespace ColliderHelper
 
         private static Vector3 FindCenterOfMass(Vessel vessel)
         {
-            var com = Vector3.zero;
+            var centerOfMass = Vector3.zero;
             var mass = 0f;
 
             for (var i = 0; i < vessel.parts.Count; i++)
@@ -19,11 +19,11 @@ namespace ColliderHelper
 
                 if (part.physicalSignificance != Part.PhysicalSignificance.FULL) continue;
 
-                com += (part.transform.position + part.transform.rotation * part.CoMOffset) * (part.mass + part.GetResourceMass());
+                centerOfMass += (part.transform.position + part.transform.rotation * part.CoMOffset) * (part.mass + part.GetResourceMass());
                 mass += part.mass + part.GetResourceMass();
             }
 
-            return com / mass;
+            return centerOfMass / mass;
         }
 
         private static Ray FindCenterOfLift(Vessel vessel)
@@ -36,8 +36,8 @@ namespace ColliderHelper
 
             var colQuery = new CenterOfLiftQuery();
 
-            var col = Vector3.zero;
-            var dir = Vector3.zero;
+            var centerOfLift = Vector3.zero;
+            var directionOfLift = Vector3.zero;
             var lift = 0f;
 
             for (var i = 0; i < vessel.parts.Count; i++)
@@ -53,9 +53,11 @@ namespace ColliderHelper
 
                 for (var j = 0; j < modules.Count; j++)
                 {
+                    if (!modules[j].IsLifting) continue;
+
                     modules[j].OnCenterOfLiftQuery(colQuery);
-                    col += colQuery.pos * colQuery.lift;
-                    dir += colQuery.dir * colQuery.lift;
+                    centerOfLift += colQuery.pos*colQuery.lift;
+                    directionOfLift += colQuery.dir*colQuery.lift;
                     lift += colQuery.lift;
                 }
             }
@@ -63,18 +65,18 @@ namespace ColliderHelper
             if (lift < float.Epsilon) return new Ray(Vector3.zero, Vector3.zero);
 
             var m = 1f / lift;
-            col *= m;
-            dir *= m;
+            centerOfLift *= m;
+            directionOfLift *= m;
 
-            return new Ray(col, dir);
+            return new Ray(centerOfLift, directionOfLift);
         }
 
         private static Ray FindCenterOfThrust(Vessel vessel)
         {
             var cotQuery = new CenterOfThrustQuery();
 
-            var cot = Vector3.zero;
-            var dir = Vector3.zero;
+            var centerOfThrust = Vector3.zero;
+            var directionOfThrust = Vector3.zero;
             var thrust = 0f;
 
             for (var i = 0; i < vessel.parts.Count; i++)
@@ -86,9 +88,11 @@ namespace ColliderHelper
 
                 for (var j = 0; j < modules.Count; j++)
                 {
+                    if (!((ModuleEngines) modules[j]).isOperational) continue;
+
                     modules[j].OnCenterOfThrustQuery(cotQuery);
-                    cot += cotQuery.pos * cotQuery.thrust;
-                    dir = cotQuery.dir * cotQuery.thrust;
+                    centerOfThrust += cotQuery.pos*cotQuery.thrust;
+                    directionOfThrust = cotQuery.dir*cotQuery.thrust;
                     thrust += cotQuery.thrust;
                 }
             }
@@ -96,10 +100,34 @@ namespace ColliderHelper
             if (thrust < float.Epsilon) return new Ray(Vector3.zero, Vector3.zero);
 
             var m = 1f / thrust;
-            cot *= m;
-            dir *= m;
+            centerOfThrust *= m;
+            directionOfThrust *= m;
 
-            return new Ray(cot, dir);
+            return new Ray(centerOfThrust, directionOfThrust);
+        }
+
+        private static Ray FindBodyLift(Vessel vessel)
+        {
+            var bodyLiftPosition = Vector3.zero;
+            var bodyLiftDirection = Vector3.zero;
+            var lift = 0f;
+
+            for (var i = 0; i < vessel.parts.Count; i++)
+            {
+                var part = vessel.parts[i];
+
+                bodyLiftPosition += (part.transform.position + part.transform.rotation * part.bodyLiftLocalPosition) * part.bodyLiftLocalVector.magnitude;
+                bodyLiftDirection += (part.transform.localRotation * part.bodyLiftLocalVector) * part.bodyLiftLocalVector.magnitude;
+                lift += part.bodyLiftLocalVector.magnitude;
+            }
+
+            if (lift < float.Epsilon) return new Ray(Vector3.zero, Vector3.zero);
+
+            var m = 1f / lift;
+            bodyLiftPosition *= m;
+            bodyLiftDirection *= m;
+
+            return new Ray(bodyLiftPosition, bodyLiftDirection);
         }
 
 
@@ -122,22 +150,32 @@ namespace ColliderHelper
             }
 
             var centerOfMass = FindCenterOfMass(_craft);
-            DrawTools.DrawSphere(centerOfMass, new Color(1.0f, 0.818f, 0.0f, 0.498f));
+            DrawTools.DrawSphere(centerOfMass, XKCDColors.Yellow);
+
+            DrawTools.DrawSphere(_craft.rootPart.transform.position, XKCDColors.Red, 0.25f);
 
             var centerOfLift = FindCenterOfLift(_craft);
             if (centerOfLift.direction != Vector3.zero)
             {
-                DrawTools.DrawSphere(centerOfLift.origin, new Color(0.0f, 0.916f, 1.0f, 0.498f), 0.9f);
-                DrawTools.DrawArrow(centerOfLift.origin, centerOfLift.direction*4f,
-                    new Color(0.0f, 0.916f, 1.0f, 0.498f));
+                DrawTools.DrawSphere(centerOfLift.origin, XKCDColors.Blue, 0.9f);
+                DrawTools.DrawArrow(centerOfLift.origin, centerOfLift.direction*4f, XKCDColors.Blue);
             }
 
             var centerOfThrust = FindCenterOfThrust(_craft);
             if (centerOfThrust.direction != Vector3.zero)
             {
-                DrawTools.DrawSphere(centerOfThrust.origin, new Color(1.0f, 0.0f, 0.986f, 0.498f), 0.95f);
-                DrawTools.DrawArrow(centerOfThrust.origin, centerOfThrust.direction*4f,
-                    new Color(1.0f, 0.0f, 0.986f, 0.498f));
+                DrawTools.DrawSphere(centerOfThrust.origin, XKCDColors.Magenta, 0.95f);
+                DrawTools.DrawArrow(centerOfThrust.origin, centerOfThrust.direction*4f, XKCDColors.Magenta);
+            }
+
+            if (_craft.rootPart.staticPressureAtm > 0f)
+            {
+                var bodyLift = FindBodyLift(_craft);
+                if (!bodyLift.direction.IsSmallerThan(0.1f))
+                {
+                    DrawTools.DrawSphere(bodyLift.origin, XKCDColors.Cyan, 0.85f);
+                    DrawTools.DrawArrow(bodyLift.origin, bodyLift.direction.normalized * 4f, XKCDColors.Cyan);
+                }
             }
         }
     }
