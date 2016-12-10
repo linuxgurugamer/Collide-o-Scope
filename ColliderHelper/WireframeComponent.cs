@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-// ReSharper disable ArrangeThisQualifier
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace ColliderHelper
@@ -14,10 +13,10 @@ namespace ColliderHelper
                     return;
             }
 
-            DrawObjects(this.gameObject);
+            DrawObjects(gameObject);
         }
 
-        private void DrawObjects(GameObject go)
+        private static void DrawObjects(GameObject go)
         {
             var comp = go.GetComponents<Collider>();
 

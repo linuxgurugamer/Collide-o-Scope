@@ -5,14 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using KSP.UI.Screens;
 
 using StreamWriter = System.IO.StreamWriter;
-// ReSharper disable ArrangeThisQualifier
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace ColliderHelper
@@ -20,8 +16,7 @@ namespace ColliderHelper
     [KSPAddon(KSPAddon.Startup.FlightAndEditor, false)]
     public class ColliderHelper : MonoBehaviour
     {
-        // ReSharper disable once InconsistentNaming
-        private const string SettingsURL = "GameData/Collide-o-Scope/settings.cfg";
+        private const string SettingsUrl = "GameData/Collide-o-Scope/settings.cfg";
 
         private static ApplicationLauncherButton _appButton;
         private readonly Texture2D _offTexture = GameDatabase.Instance.GetTexture("Collide-o-Scope/Icons/AppIconOff_38", false);
@@ -35,7 +30,7 @@ namespace ColliderHelper
 
         private bool _defaultEnabled = true;
 
-        private static bool _flightMarkersEnabled = false;
+        private static bool _flightMarkersEnabled;
 
         private static ModuleColliderHelper AddModule(Part p)
         {
@@ -347,7 +342,7 @@ namespace ColliderHelper
 
         private static void RemoveFlightMarkers()
         {
-            var components = GameObject.FindObjectsOfType<FlightMarkersComponent>();
+            var components = FindObjectsOfType<FlightMarkersComponent>();
             for (var i = 0; i < components.Length; i++)
             {
                 Destroy(components[i]);
@@ -358,7 +353,7 @@ namespace ColliderHelper
 
         public void Awake()
         {
-            LoadSettings(SettingsURL);
+            LoadSettings(SettingsUrl);
 
             GameEvents.onGUIApplicationLauncherReady.Add(GuiApplicationLauncherReady);
 
@@ -412,7 +407,7 @@ namespace ColliderHelper
 
             CleanupHooks();
 
-            SaveSettings(SettingsURL);
+            SaveSettings(SettingsUrl);
         }
     }
 }
