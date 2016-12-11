@@ -1,3 +1,6 @@
+1.0.6.0
+    Fixed capsule colliders rendering with incorrect radius. (Please report further bugs on this)
+    Corrected discrepancy in Readme.txt
 1.0.5.0
     Adjusted how engine thrust transform is found for drawing. Also fixes a bug with multiple transform engines.
     Added an arrow drawn from the thrust transform.
