@@ -53,7 +53,7 @@ namespace ColliderHelper
                     var top = caps.transform.TransformPoint(caps.center + caps.height * 0.5f * dir);
                     var bottom = caps.transform.TransformPoint(caps.center - caps.height * 0.5f * dir);
 
-                    DrawTools.DrawCapsule(top, bottom, XKCDColors.Green, caps.radius);
+                    DrawTools.DrawCapsule(top, bottom, XKCDColors.Green, caps.radius * caps.transform.lossyScale.x);
                 }
                 else if (baseCol is MeshCollider)
                 {

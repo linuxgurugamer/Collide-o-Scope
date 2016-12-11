@@ -28,6 +28,16 @@ namespace ColliderHelper
             CycleState();
         }
 
+#if DEBUG
+        [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
+            guiActiveEditor = true, unfocusedRange = 100f, guiName = "Dump Game Object", active = true,
+            advancedTweakable = true, isPersistent = false)]
+        public void DumpGameObject()
+        {
+            ColliderHelper.DumpGameObjectChilds(this.gameObject, "");
+        }
+#endif
+
         public void CycleState()
         {
             // ReSharper disable once SwitchStatementMissingSomeCases
