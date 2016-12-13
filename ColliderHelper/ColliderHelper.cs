@@ -21,7 +21,9 @@ namespace ColliderHelper
     public class ColliderHelper : MonoBehaviour
     {
         // ReSharper disable once InconsistentNaming
-        private const string SettingsURL = "GameData/Collide-o-Scope/settings.cfg";
+        private const string _oldSettingsURL = "GameData/Collide-o-Scope/settings.cfg";
+        // ReSharper disable once InconsistentNaming
+        private const string SettingsURL = "GameData/Collide-o-Scope/PluginData/settings.cfg";
 
         private static ApplicationLauncherButton _appButton;
         private readonly Texture2D _offTexture = GameDatabase.Instance.GetTexture("Collide-o-Scope/Icons/AppIconOff_38", false);
@@ -319,8 +321,34 @@ namespace ColliderHelper
             GameEvents.onVesselLoaded.Remove(VesselLoaded);
         }
 
+        /// <summary>
+        /// Added in 1.0.7 to fix the ModuleManager cache reload issue.
+        /// </summary>
+        private static void FixSettingsFile()
+        {
+            if (!System.IO.File.Exists(KSPUtil.ApplicationRootPath + _oldSettingsURL)) return;
+
+            var cosPath = KSPUtil.ApplicationRootPath + "GameData/Collide-o-Scope/";
+
+            if (!System.IO.Directory.Exists(cosPath + "PluginData"))
+            {
+                System.IO.Directory.CreateDirectory(cosPath + "PluginData");
+            }
+
+            System.IO.File.Copy(cosPath + "settings.cfg", cosPath + "PluginData/settings.cfg");
+
+            if (System.IO.File.Exists(cosPath + "PluginData/settings.cfg"))
+            {
+                System.IO.File.Delete(cosPath + "settings.cfg");
+            }
+
+            Debug.Log("[Collide-o-Scope] Fixed settings.cfg location. (1.0.7)");
+        }
+
         public void Awake()
         {
+            FixSettingsFile();
+
             LoadSettings(SettingsURL);
 
             GameEvents.onGUIApplicationLauncherReady.Add(GuiApplicationLauncherReady);

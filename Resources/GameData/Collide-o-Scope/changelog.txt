@@ -1,3 +1,5 @@
+1.0.7.0
+    Added a fix that will move settings.cfg out into Collide-o-Scope/PluginData to prevent ModuleManager from rebuilding its cache every time KSP is launched.
 1.0.6.0
     Fixed capsule colliders rendering with incorrect radius. (Please report further bugs on this)
     Corrected discrepancy in Readme.txt
