@@ -13,7 +13,7 @@ After Advanced Tweakables is enabled a new application button will appear when i
 
 NOTE: You may turn on as many colliders as you wish, however this will cause performance problems if too many are active at once.
 
-An alternative to the action menu is to place your mouse cursor over a part and press the assigned hotkey. The default hotkey is 'O' (capital oh) and may be changed in the settings.cfg file.
+An alternative to the action menu is to place your mouse cursor over a part and press the assigned hotkey. The default hotkey is 'O' (capital oh) and may be changed in the PluginData/settings.cfg file.
 
 To turn off all colliders at once move your mouse cursor so that no part is under it and press the hotkey. You may also press the application button to disable the tweakables.
 
