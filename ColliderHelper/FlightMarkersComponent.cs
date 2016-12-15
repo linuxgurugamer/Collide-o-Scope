@@ -26,6 +26,8 @@ namespace ColliderHelper
         private const float BodyLiftCutoff = 0.2f;
         private const float DragCutoff = 0.3f;
 
+        private const float SphereScale = 0.5f;
+
         private bool _combineLift = true;
 
 
@@ -248,7 +250,7 @@ namespace ColliderHelper
 
             if (_centerOfThrust.direction != Vector3.zero)
             {
-                DrawTools.DrawSphere(_centerOfThrust.origin, XKCDColors.Magenta, 0.95f);
+                DrawTools.DrawSphere(_centerOfThrust.origin, XKCDColors.Magenta, 0.95f * SphereScale);
                 DrawTools.DrawArrow(_centerOfThrust.origin, _centerOfThrust.direction*4.0f, XKCDColors.Magenta);
             }
 
@@ -275,27 +277,27 @@ namespace ColliderHelper
                 _combinedLift.origin /= count;
                 _combinedLift.direction /= count;
 
-                DrawTools.DrawSphere(_combinedLift.origin, XKCDColors.Purple, 0.9f);
+                DrawTools.DrawSphere(_combinedLift.origin, XKCDColors.Purple, 0.9f * SphereScale);
                 DrawTools.DrawArrow(_combinedLift.origin, _combinedLift.direction*4.0f, XKCDColors.Purple);
             }
             else
             {
                 if (!_centerOfLift.direction.IsSmallerThan(CenterOfLiftCutoff))
                 {
-                    DrawTools.DrawSphere(_centerOfLift.origin, XKCDColors.Blue, 0.9f);
+                    DrawTools.DrawSphere(_centerOfLift.origin, XKCDColors.Blue, 0.9f * SphereScale);
                     DrawTools.DrawArrow(_centerOfLift.origin, _centerOfLift.direction*4.0f, XKCDColors.Blue);
                 }
 
                 if (!_bodyLift.direction.IsSmallerThan(BodyLiftCutoff))
                 {
-                    DrawTools.DrawSphere(_bodyLift.origin, XKCDColors.Cyan, 0.85f);
+                    DrawTools.DrawSphere(_bodyLift.origin, XKCDColors.Cyan, 0.85f * SphereScale);
                     DrawTools.DrawArrow(_bodyLift.origin, _bodyLift.direction*4.0f, XKCDColors.Cyan);
                 }
             }
 
             if (!_drag.direction.IsSmallerThan(DragCutoff))
             {
-                DrawTools.DrawSphere(_drag.origin, XKCDColors.Red, 0.8f);
+                DrawTools.DrawSphere(_drag.origin, XKCDColors.Red, 0.8f * SphereScale);
                 DrawTools.DrawArrow(_drag.origin, _drag.direction*4.0f, XKCDColors.Red);
             }
 
