@@ -22,9 +22,9 @@ namespace ColliderHelper
 
         private static readonly Ray ZeroRay = new Ray(Vector3.zero, Vector3.zero);
 
-        private const float CenterOfLiftCutoff = 0.2f;
-        private const float BodyLiftCutoff = 0.2f;
-        private const float DragCutoff = 0.3f;
+        private const float CenterOfLiftCutoff = 0.1f;
+        private const float BodyLiftCutoff = 0.1f;
+        private const float DragCutoff = 0.1f;
 
         private const float SphereScale = 0.5f;
 
@@ -244,7 +244,7 @@ namespace ColliderHelper
 
             Profiler.BeginSample("FlightMarkersRenderDraw");
 
-            DrawTools.DrawSphere(_centerOfMass, XKCDColors.Yellow);
+            DrawTools.DrawSphere(_centerOfMass, XKCDColors.Yellow, 1.0f * SphereScale);
 
             DrawTools.DrawSphere(_craft.rootPart.transform.position, XKCDColors.Green, 0.25f);
 
