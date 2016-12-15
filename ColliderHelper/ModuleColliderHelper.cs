@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -19,14 +20,45 @@ namespace ColliderHelper
         [SerializeField]
         private List<ThrustArrowComponent> _thrustArrows;
 
+        private FlightMarkersComponent _flightMarkerComponent;
+        private bool _flightMarkersEnabled;
+        private bool _flightMarkersCombinedLift = true;
+
         [KSPEvent(guiActive = true, advancedTweakable = true, guiActiveUnfocused = true, guiActiveUncommand = true,
             externalToEVAOnly = false, guiActiveEditor = false, unfocusedRange = 100f, guiName = "Flight Markers: Off",
             active = true, isPersistent = false)]
         public void ToggleFlightMarkers()
         {
-            var markersEnabled = ColliderHelper.ToggleFlightMarkers(vessel);
+            var modules = vessel.FindPartModulesImplementing<ModuleColliderHelper>();
 
-            Events["ToggleFlightMarkers"].guiName = markersEnabled ? "Flight Markers: On" : "Flight Markers: Off";
+            if (_flightMarkersEnabled)
+            {
+                for (var i = 0; i < modules.Count; i++)
+                {
+                    modules[i].DisableFlightMarkers();
+                }
+            }
+            else
+            {
+                _flightMarkerComponent = vessel.gameObject.AddComponent<FlightMarkersComponent>();
+
+                for (var i = 0; i < modules.Count; i++)
+                {
+                    modules[i].EnableFlightMarkers();
+                }
+            }
+        }
+
+        [KSPEvent(guiActive = true, advancedTweakable = true, guiActiveUnfocused = true, guiActiveUncommand = true,
+            externalToEVAOnly = false, guiActiveEditor = false, unfocusedRange = 100f, guiName = "Combine Lift: On",
+            active = false, isPersistent = false)]
+        public void ToggleCombinedLift()
+        {
+            var modules = vessel.FindPartModulesImplementing<ModuleColliderHelper>();
+            for (var i = 0; i < modules.Count; i++)
+            {
+                modules[i].CycleCombinedLift();
+            }
         }
 
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
@@ -35,6 +67,61 @@ namespace ColliderHelper
         public void ColliderHelperEvent()
         {
             CycleState();
+        }
+
+#if DEBUG
+        [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
+            guiActiveEditor = true, unfocusedRange = 100f, guiName = "Do Things", active = true,
+            advancedTweakable = true, isPersistent = false)]
+        public void DoThings()
+        {
+            //ColliderHelper.DumpGameObjectChilds(this.gameObject, "");
+
+            var controlSurfaces = part.vessel.FindPartModulesImplementing<ModuleControlSurface>();
+            Debug.Log("Surfaces: " + controlSurfaces.Count);
+
+            for (var i = 0; i < controlSurfaces.Count; i++)
+            {
+                var controlTransform = controlSurfaces[i].part.FindModelTransform(controlSurfaces[i].transformName);
+                if(controlTransform)
+                    Debug.Log("Ctrl: " + controlTransform.localRotation + ", Part: " + controlSurfaces[i].transform.localRotation);
+            }
+        }
+#endif
+
+        public void EnableFlightMarkers()
+        {
+            _flightMarkersEnabled = true;
+
+            Events["ToggleCombinedLift"].active = true;
+            Events["ToggleFlightMarkers"].guiName = "Flight Markers: On";
+        }
+
+        public void DisableFlightMarkers()
+        {
+            if (_flightMarkerComponent)
+            {
+                Destroy(_flightMarkerComponent);
+                _flightMarkerComponent = null;
+            }
+
+            _flightMarkersEnabled = false;
+
+            Events["ToggleCombinedLift"].active = false;
+            Events["ToggleCombinedLift"].guiName = "Combine Lift: On";
+            Events["ToggleFlightMarkers"].guiName = "Flight Markers: Off";
+        }
+
+        public void CycleCombinedLift()
+        {
+            if (_flightMarkerComponent)
+            {
+                _flightMarkerComponent.ToggleCombinedLift();
+            }
+
+            _flightMarkersCombinedLift = !_flightMarkersCombinedLift;
+
+            Events["ToggleCombinedLift"].guiName = _flightMarkersCombinedLift ? "Combine Lift: On" : "Combine Lift: Off";
         }
 
         public void CycleState()

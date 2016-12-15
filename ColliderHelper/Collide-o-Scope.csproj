@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ColliderHelper.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="ModuleColliderHelper.cs" />
     <Compile Include="DrawTools.cs" />
     <Compile Include="FlightMarkersComponent.cs" />
