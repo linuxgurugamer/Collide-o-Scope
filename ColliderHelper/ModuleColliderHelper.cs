@@ -106,6 +106,7 @@ namespace ColliderHelper
             }
 
             _flightMarkersEnabled = false;
+            _flightMarkersCombinedLift = true;
 
             Events["ToggleCombinedLift"].active = false;
             Events["ToggleCombinedLift"].guiName = "Combine Lift: On";
@@ -266,6 +267,14 @@ namespace ColliderHelper
 
             mod = null;
             return false;
+        }
+
+        public void OnDestroy()
+        {
+            if (_flightMarkerComponent)
+            {
+                Destroy(_flightMarkerComponent);
+            }
         }
     }
 }
