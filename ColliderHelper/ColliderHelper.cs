@@ -436,7 +436,7 @@ namespace ColliderHelper
 
             CleanupHooks();
 
-            SaveSettings(SettingsUrl);
+            SaveSettings(SettingsURL);
         }
     }
 }

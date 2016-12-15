@@ -22,6 +22,10 @@ namespace ColliderHelper
 
         private static readonly Ray ZeroRay = new Ray(Vector3.zero, Vector3.zero);
 
+        private const float CenterOfLiftCutoff = 0.2f;
+        private const float BodyLiftCutoff = 0.2f;
+        private const float DragCutoff = 0.3f;
+
         private bool _combineLift = true;
 
 
@@ -154,6 +158,20 @@ namespace ColliderHelper
             for (var i = 0; i < vessel.parts.Count; i++)
             {
                 var part = vessel.parts[i];
+                var liftModule = part.Modules.GetModule<ModuleLiftingSurface>();
+
+                if (liftModule)
+                {
+                    if (liftModule.useInternalDragModel)
+                    {
+                        dragPosition += (part.transform.position + part.transform.rotation * part.CoPOffset) * liftModule.dragScalar;
+                        dragDirection += (part.transform.localRotation * liftModule.dragForce) * liftModule.dragScalar;
+                        drag += liftModule.dragScalar;
+
+                        continue;
+                    }
+                }
+
                 dragPosition += (part.transform.position + part.transform.rotation * part.CoPOffset) * part.dragScalar;
                 dragDirection += (part.transform.localRotation * part.dragVectorDirLocal) * part.dragScalar;
                 drag += part.dragScalar;
@@ -226,7 +244,7 @@ namespace ColliderHelper
 
             DrawTools.DrawSphere(_centerOfMass, XKCDColors.Yellow);
 
-            DrawTools.DrawSphere(_craft.rootPart.transform.position, XKCDColors.Red, 0.25f);
+            DrawTools.DrawSphere(_craft.rootPart.transform.position, XKCDColors.Green, 0.25f);
 
             if (_centerOfThrust.direction != Vector3.zero)
             {
@@ -240,14 +258,14 @@ namespace ColliderHelper
                 _combinedLift.direction = Vector3.zero;
                 var count = 0;
 
-                if (!_centerOfLift.direction.IsSmallerThan(0.1f))
+                if (!_centerOfLift.direction.IsSmallerThan(CenterOfLiftCutoff))
                 {
                     _combinedLift.origin += _centerOfLift.origin;
                     _combinedLift.direction += _centerOfLift.direction;
                     count++;
                 }
 
-                if (!_bodyLift.direction.IsSmallerThan(0.1f))
+                if (!_bodyLift.direction.IsSmallerThan(BodyLiftCutoff))
                 {
                     _combinedLift.origin += _bodyLift.origin;
                     _combinedLift.direction += _bodyLift.direction;
@@ -262,20 +280,20 @@ namespace ColliderHelper
             }
             else
             {
-                if (!_centerOfLift.direction.IsSmallerThan(0.1f))
+                if (!_centerOfLift.direction.IsSmallerThan(CenterOfLiftCutoff))
                 {
                     DrawTools.DrawSphere(_centerOfLift.origin, XKCDColors.Blue, 0.9f);
                     DrawTools.DrawArrow(_centerOfLift.origin, _centerOfLift.direction*4.0f, XKCDColors.Blue);
                 }
 
-                if (!_bodyLift.direction.IsSmallerThan(0.1f))
+                if (!_bodyLift.direction.IsSmallerThan(BodyLiftCutoff))
                 {
                     DrawTools.DrawSphere(_bodyLift.origin, XKCDColors.Cyan, 0.85f);
                     DrawTools.DrawArrow(_bodyLift.origin, _bodyLift.direction*4.0f, XKCDColors.Cyan);
                 }
             }
 
-            if (!_drag.direction.IsSmallerThan(0.3f))
+            if (!_drag.direction.IsSmallerThan(DragCutoff))
             {
                 DrawTools.DrawSphere(_drag.origin, XKCDColors.Red, 0.8f);
                 DrawTools.DrawArrow(_drag.origin, _drag.direction*4.0f, XKCDColors.Red);
