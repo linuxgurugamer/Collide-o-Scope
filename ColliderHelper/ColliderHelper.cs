@@ -155,6 +155,11 @@ namespace ColliderHelper
             }
         }
 
+        public void OnGameSceneSwitchRequested(GameEvents.FromToAction<GameScenes, GameScenes> tfa)
+        {
+            RemoveModules();
+        }
+
         public static void DumpGameObjectChilds(GameObject go, string pre)
         {
             _sb = new StringBuilder();
@@ -291,6 +296,7 @@ namespace ColliderHelper
             GameEvents.onEditorStarted.Add(EditorStarted);
             GameEvents.onFlagPlant.Add(FlagPlant);
             GameEvents.onFlightReady.Add(FlightReady);
+            GameEvents.onGameSceneSwitchRequested.Add(OnGameSceneSwitchRequested);
             GameEvents.onVesselLoaded.Add(VesselLoaded);
 
             _enabled = true;
@@ -318,6 +324,7 @@ namespace ColliderHelper
             GameEvents.onEditorStarted.Remove(EditorStarted);
             GameEvents.onFlagPlant.Remove(FlagPlant);
             GameEvents.onFlightReady.Remove(FlightReady);
+            GameEvents.onGameSceneSwitchRequested.Remove(OnGameSceneSwitchRequested);
             GameEvents.onVesselLoaded.Remove(VesselLoaded);
         }
 
