@@ -198,7 +198,7 @@ namespace ColliderHelper
             _enabled = true;
         }
 
-        public void FixedUpdate()
+        public void OnRenderObject()
         {
             if (!_enabled) return;
 
@@ -207,12 +207,22 @@ namespace ColliderHelper
                 return;
             }
 
-            Profiler.BeginSample("FlightMarkersRenderMath");
+            Profiler.BeginSample("FlightMarkersRenderDraw");
 
             _centerOfMass = FindCenterOfMass(_craft);
 
+            DrawTools.DrawSphere(_centerOfMass, XKCDColors.Yellow, 1.0f * SphereScale);
+
+            DrawTools.DrawSphere(_craft.rootPart.transform.position, XKCDColors.Green, 0.25f);
+
             var thrustProviders = _craft.FindPartModulesImplementing<IThrustProvider>();
             _centerOfThrust = thrustProviders.Count > 0 ? FindCenterOfThrust(thrustProviders) : ZeroRay;
+
+            if (_centerOfThrust.direction != Vector3.zero)
+            {
+                DrawTools.DrawSphere(_centerOfThrust.origin, XKCDColors.Magenta, 0.95f * SphereScale);
+                DrawTools.DrawArrow(_centerOfThrust.origin, _centerOfThrust.direction*4.0f, XKCDColors.Magenta);
+            }
 
             if (_craft.rootPart.staticPressureAtm > 0.0f)
             {
@@ -228,30 +238,6 @@ namespace ColliderHelper
                 _centerOfLift = ZeroRay;
                 _bodyLift = ZeroRay;
                 _drag = ZeroRay;
-            }
-
-            Profiler.EndSample();
-        }
-
-        public void OnRenderObject()
-        {
-            if (!_enabled) return;
-
-            if (MapView.MapIsEnabled || (CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.IVA))
-            {
-                return;
-            }
-
-            Profiler.BeginSample("FlightMarkersRenderDraw");
-
-            DrawTools.DrawSphere(_centerOfMass, XKCDColors.Yellow, 1.0f * SphereScale);
-
-            DrawTools.DrawSphere(_craft.rootPart.transform.position, XKCDColors.Green, 0.25f);
-
-            if (_centerOfThrust.direction != Vector3.zero)
-            {
-                DrawTools.DrawSphere(_centerOfThrust.origin, XKCDColors.Magenta, 0.95f * SphereScale);
-                DrawTools.DrawArrow(_centerOfThrust.origin, _centerOfThrust.direction*4.0f, XKCDColors.Magenta);
             }
 
             if (_combineLift)
