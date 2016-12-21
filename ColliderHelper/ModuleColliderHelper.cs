@@ -34,7 +34,27 @@ namespace ColliderHelper
             advancedTweakable = true, isPersistent = false)]
         public void DumpGameObject()
         {
-            ColliderHelper.DumpGameObjectChilds(this.gameObject, "");
+            WalkColliders(gameObject);
+        }
+
+        private static void WalkColliders(GameObject go)
+        {
+            var colliders = go.GetComponents<Collider>();
+
+            for (var i = 0; i < colliders.Length; i++)
+            {
+                var baseCollider = colliders[i];
+
+                Debug.Log("[CH] " + baseCollider.transform.name + " LScale: " + baseCollider.transform.lossyScale);
+            }
+
+            for (var i = 0; i < go.transform.childCount; i++)
+            {
+                var child = go.transform.GetChild(i).gameObject;
+
+                if (!child.GetComponent<Part>())
+                    WalkColliders(child);
+            }
         }
 #endif
 

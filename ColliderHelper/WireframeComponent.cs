@@ -34,6 +34,8 @@ namespace ColliderHelper
             {
                 var baseCol = comp[i];
 
+                if (baseCol.transform.name == "Surface Attach Collider") continue;
+
                 if (baseCol is BoxCollider)
                 {
                     var box = baseCol as BoxCollider;
@@ -42,7 +44,7 @@ namespace ColliderHelper
                 else if (baseCol is SphereCollider)
                 {
                     var sphere = baseCol as SphereCollider;
-                    DrawTools.DrawSphere(sphere.transform.TransformPoint(sphere.center), XKCDColors.Red, sphere.radius);
+                    DrawTools.DrawSphere(sphere.transform.TransformPoint(sphere.center), XKCDColors.Red, sphere.radius * sphere.transform.lossyScale.x);
                 }
                 else if (baseCol is CapsuleCollider)
                 {
