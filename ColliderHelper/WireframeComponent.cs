@@ -34,6 +34,8 @@ namespace ColliderHelper
             {
                 var baseCol = comp[i];
 
+                if (baseCol.transform.name == "Surface Attach Collider") continue;
+
                 if (baseCol is BoxCollider)
                 {
                     var box = baseCol as BoxCollider;
