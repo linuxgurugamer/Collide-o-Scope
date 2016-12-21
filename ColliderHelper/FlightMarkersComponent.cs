@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 // ReSharper disable ForCanBeConvertedToForeach
+// ReSharper disable RedundantArgumentDefaultValue
 
 namespace ColliderHelper
 {
@@ -13,7 +14,6 @@ namespace ColliderHelper
         private Vessel _craft;
         private bool _enabled;
 
-        private Vector3 _centerOfMass = Vector3.zero;
         private Ray _centerOfThrust = new Ray(Vector3.zero, Vector3.zero);
         private Ray _centerOfLift = new Ray(Vector3.zero, Vector3.zero);
         private Ray _bodyLift = new Ray(Vector3.zero, Vector3.zero);
@@ -36,25 +36,6 @@ namespace ColliderHelper
             _combineLift = !_combineLift;
 
             return _combineLift;
-        }
-
-        private static Vector3 FindCenterOfMass(Vessel vessel)
-        {
-            var centerOfMass = Vector3.zero;
-            var mass = 0f;
-
-            for (var i = 0; i < vessel.parts.Count; i++)
-            {
-                var part = vessel.parts[i];
-
-                if (part.physicalSignificance != Part.PhysicalSignificance.FULL) continue;
-
-                centerOfMass += (part.transform.position + part.transform.rotation*part.CoMOffset)*
-                                (part.mass + part.GetResourceMass());
-                mass += part.mass + part.GetResourceMass();
-            }
-
-            return centerOfMass / mass;
         }
 
         // ReSharper disable once SuggestBaseTypeForParameter
@@ -209,9 +190,7 @@ namespace ColliderHelper
 
             Profiler.BeginSample("FlightMarkersRenderDraw");
 
-            _centerOfMass = FindCenterOfMass(_craft);
-
-            DrawTools.DrawSphere(_centerOfMass, XKCDColors.Yellow, 1.0f * SphereScale);
+            DrawTools.DrawSphere(_craft.CoM, XKCDColors.Yellow, 1.0f * SphereScale);
 
             DrawTools.DrawSphere(_craft.rootPart.transform.position, XKCDColors.Green, 0.25f);
 
