@@ -44,7 +44,7 @@ namespace ColliderHelper
                 else if (baseCol is SphereCollider)
                 {
                     var sphere = baseCol as SphereCollider;
-                    DrawTools.DrawSphere(sphere.transform.TransformPoint(sphere.center), XKCDColors.Red, sphere.radius);
+                    DrawTools.DrawSphere(sphere.transform.TransformPoint(sphere.center), XKCDColors.Red, sphere.radius * sphere.transform.lossyScale.x);
                 }
                 else if (baseCol is CapsuleCollider)
                 {
