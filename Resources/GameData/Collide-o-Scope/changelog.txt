@@ -1,3 +1,7 @@
+1.0.8.0
+    Fixed NRE when switching from flight scene to any other scene.
+    Disabled inactive surface attach colliders from rendering.
+    Applied quick patch to sphere collider scaling when parts are improperly scaled in Unity.
 1.0.7.0
     Added a fix that will move settings.cfg out into Collide-o-Scope/PluginData to prevent ModuleManager from rebuilding its cache every time KSP is launched.
 1.0.6.0

@@ -75,16 +75,26 @@ namespace ColliderHelper
             advancedTweakable = true, isPersistent = false)]
         public void DoThings()
         {
-            //ColliderHelper.DumpGameObjectChilds(this.gameObject, "");
+            WalkColliders(gameObject);
+        }
 
-            var controlSurfaces = part.vessel.FindPartModulesImplementing<ModuleControlSurface>();
-            Debug.Log("Surfaces: " + controlSurfaces.Count);
+        private static void WalkColliders(GameObject go)
+        {
+            var colliders = go.GetComponents<Collider>();
 
-            for (var i = 0; i < controlSurfaces.Count; i++)
+            for (var i = 0; i < colliders.Length; i++)
             {
-                var controlTransform = controlSurfaces[i].part.FindModelTransform(controlSurfaces[i].transformName);
-                if(controlTransform)
-                    Debug.Log("Ctrl: " + controlTransform.localRotation + ", Part: " + controlSurfaces[i].transform.localRotation);
+                var baseCollider = colliders[i];
+
+                Debug.Log("[CH] " + baseCollider.transform.name + " LScale: " + baseCollider.transform.lossyScale);
+            }
+
+            for (var i = 0; i < go.transform.childCount; i++)
+            {
+                var child = go.transform.GetChild(i).gameObject;
+
+                if (!child.GetComponent<Part>())
+                    WalkColliders(child);
             }
         }
 #endif
