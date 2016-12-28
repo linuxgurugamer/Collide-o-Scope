@@ -35,15 +35,20 @@ namespace ColliderHelper
 
                 if (baseCol.transform.name == "Surface Attach Collider") continue;
 
+                var colliderTransformScale = baseCol.transform.lossyScale;
+                var colliderScale = Mathf.Max(Mathf.Abs(colliderTransformScale.x), Mathf.Abs(colliderTransformScale.y),
+                    Mathf.Abs(colliderTransformScale.z));
+
                 if (baseCol is BoxCollider)
                 {
                     var box = baseCol as BoxCollider;
-                    DrawTools.DrawLocalCube(box.transform, box.size, XKCDColors.Yellow, box.center);
+                    DrawTools.DrawLocalCube(box.transform, box.size * colliderScale, XKCDColors.Yellow, box.center);
                 }
                 else if (baseCol is SphereCollider)
                 {
                     var sphere = baseCol as SphereCollider;
-                    DrawTools.DrawSphere(sphere.transform.TransformPoint(sphere.center), XKCDColors.Red, sphere.radius * sphere.transform.lossyScale.x);
+
+                    DrawTools.DrawSphere(sphere.transform.TransformPoint(sphere.center), XKCDColors.Red, sphere.radius * colliderScale);
                 }
                 else if (baseCol is CapsuleCollider)
                 {
@@ -54,7 +59,7 @@ namespace ColliderHelper
                     var top = caps.transform.TransformPoint(caps.center + caps.height * 0.5f * dir);
                     var bottom = caps.transform.TransformPoint(caps.center - caps.height * 0.5f * dir);
 
-                    DrawTools.DrawCapsule(top, bottom, XKCDColors.Green, caps.radius * caps.transform.lossyScale.x);
+                    DrawTools.DrawCapsule(top, bottom, XKCDColors.Green, caps.radius * colliderScale);
                 }
                 else if (baseCol is MeshCollider)
                 {
