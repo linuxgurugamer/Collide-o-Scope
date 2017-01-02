@@ -1,14 +1,13 @@
 ﻿using UnityEngine;
-// ReSharper disable ArrangeThisQualifier
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace ColliderHelper
 {
     public class ThrustArrowComponent : MonoBehaviour
     {
-        private const string shader = "Particles/Alpha Blended";
-        private const int layer = 0; //2
-        private const float lineLength = 1.0f;
+        private const string ArrowShader = "Particles/Alpha Blended";
+        private const int ArrowLayer = 0;
+        private const float LineLength = 1.0f;
 
         private Color _color = XKCDColors.Yellow;
         private Material _material;
@@ -18,7 +17,7 @@ namespace ColliderHelper
 
         public void Awake()
         {
-            _material = new Material(Shader.Find(shader));
+            _material = new Material(Shader.Find(ArrowShader));
         }
 
         public void Start()
@@ -30,15 +29,15 @@ namespace ColliderHelper
             _lineStart.SetColors(_color, _color);
             _lineStart.SetWidth(0.1f, 0.1f);
             _lineStart.SetPosition(0, Vector3.zero);
-            _lineStart.SetPosition(1, this.gameObject.transform.parent.forward * (lineLength - 0.2f));
+            _lineStart.SetPosition(1, gameObject.transform.parent.forward * (LineLength - 0.2f));
             _lineStart.enabled = true;
 
             _lineEnd = NewLine();
             _lineEnd.SetVertexCount(2);
             _lineEnd.SetColors(_color, _color);
             _lineEnd.SetWidth(0.2f, 0f);
-            _lineEnd.SetPosition(0, this.gameObject.transform.parent.forward * (lineLength - 0.2f));
-            _lineEnd.SetPosition(1, this.gameObject.transform.parent.forward * lineLength);
+            _lineEnd.SetPosition(0, gameObject.transform.parent.forward * (LineLength - 0.2f));
+            _lineEnd.SetPosition(1, gameObject.transform.parent.forward * LineLength);
             _lineEnd.enabled = true;
         }
 
@@ -46,9 +45,9 @@ namespace ColliderHelper
         {
             var obj = new GameObject("ColliderHelper LineRenderer object");
             var lr = obj.AddComponent<LineRenderer>();
-            obj.transform.parent = this.gameObject.transform;
+            obj.transform.parent = gameObject.transform;
             obj.transform.localPosition = Vector3.zero;
-            obj.layer = layer;
+            obj.layer = ArrowLayer;
             lr.material = _material;
             lr.useWorldSpace = false;
             return lr;

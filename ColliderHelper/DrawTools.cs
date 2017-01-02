@@ -35,8 +35,7 @@ namespace ColliderHelper
 
         public static float NearPlane = 0f;
 
-        // ReSharper disable once InconsistentNaming
-        private static Material material => _material ?? (_material = new Material(Shader.Find("Particles/Alpha Blended")));
+        private static Material DrawMaterial => _material ?? (_material = new Material(Shader.Find("Particles/Alpha Blended")));
 
         public static void NewFrame()
         {
@@ -49,7 +48,7 @@ namespace ColliderHelper
             if (_glDepth == 0)
             {
                 GL.PushMatrix();
-                material.SetPass(0);
+                DrawMaterial.SetPass(0);
                 GL.LoadPixelMatrix();
                 GL.Begin(GL.LINES);
             }

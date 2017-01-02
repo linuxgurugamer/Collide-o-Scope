@@ -1,7 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-// ReSharper disable ArrangeThisQualifier
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace ColliderHelper
@@ -20,6 +20,47 @@ namespace ColliderHelper
         [SerializeField]
         private List<ThrustArrowComponent> _thrustArrows;
 
+        private FlightMarkersComponent _flightMarkerComponent;
+        private bool _flightMarkersEnabled;
+        private bool _flightMarkersCombinedLift = true;
+
+        [KSPEvent(guiActive = true, advancedTweakable = true, guiActiveUnfocused = true, guiActiveUncommand = true,
+            externalToEVAOnly = false, guiActiveEditor = false, unfocusedRange = 100f, guiName = "Flight Markers: Off",
+            active = true, isPersistent = false)]
+        public void ToggleFlightMarkers()
+        {
+            var modules = vessel.FindPartModulesImplementing<ModuleColliderHelper>();
+
+            if (_flightMarkersEnabled)
+            {
+                for (var i = 0; i < modules.Count; i++)
+                {
+                    modules[i].DisableFlightMarkers();
+                }
+            }
+            else
+            {
+                _flightMarkerComponent = vessel.gameObject.AddComponent<FlightMarkersComponent>();
+
+                for (var i = 0; i < modules.Count; i++)
+                {
+                    modules[i].EnableFlightMarkers();
+                }
+            }
+        }
+
+        [KSPEvent(guiActive = true, advancedTweakable = true, guiActiveUnfocused = true, guiActiveUncommand = true,
+            externalToEVAOnly = false, guiActiveEditor = false, unfocusedRange = 100f, guiName = "Combine Lift: On",
+            active = false, isPersistent = false)]
+        public void ToggleCombinedLift()
+        {
+            var modules = vessel.FindPartModulesImplementing<ModuleColliderHelper>();
+            for (var i = 0; i < modules.Count; i++)
+            {
+                modules[i].CycleCombinedLift();
+            }
+        }
+
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
             guiActiveEditor = true, unfocusedRange = 100f, guiName = "Show Collider: Off", active = true,
             advancedTweakable = true, isPersistent = false)]
@@ -30,9 +71,9 @@ namespace ColliderHelper
 
 #if DEBUG
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
-            guiActiveEditor = true, unfocusedRange = 100f, guiName = "Dump Game Object", active = true,
+            guiActiveEditor = true, unfocusedRange = 100f, guiName = "Do Things", active = true,
             advancedTweakable = true, isPersistent = false)]
-        public void DumpGameObject()
+        public void DoThings()
         {
             WalkColliders(gameObject);
         }
@@ -58,6 +99,42 @@ namespace ColliderHelper
         }
 #endif
 
+        public void EnableFlightMarkers()
+        {
+            _flightMarkersEnabled = true;
+
+            Events["ToggleCombinedLift"].active = true;
+            Events["ToggleFlightMarkers"].guiName = "Flight Markers: On";
+        }
+
+        public void DisableFlightMarkers()
+        {
+            if (_flightMarkerComponent)
+            {
+                Destroy(_flightMarkerComponent);
+                _flightMarkerComponent = null;
+            }
+
+            _flightMarkersEnabled = false;
+            _flightMarkersCombinedLift = true;
+
+            Events["ToggleCombinedLift"].active = false;
+            Events["ToggleCombinedLift"].guiName = "Combine Lift: On";
+            Events["ToggleFlightMarkers"].guiName = "Flight Markers: Off";
+        }
+
+        public void CycleCombinedLift()
+        {
+            if (_flightMarkerComponent)
+            {
+                _flightMarkerComponent.ToggleCombinedLift();
+            }
+
+            _flightMarkersCombinedLift = !_flightMarkersCombinedLift;
+
+            Events["ToggleCombinedLift"].guiName = _flightMarkersCombinedLift ? "Combine Lift: On" : "Combine Lift: Off";
+        }
+
         public void CycleState()
         {
             // ReSharper disable once SwitchStatementMissingSomeCases
@@ -65,7 +142,7 @@ namespace ColliderHelper
             {
                 case RendererState.Active:
                     // on->symmetry|off
-                    if (this.part.symmetryCounterparts.Count > 0)
+                    if (part.symmetryCounterparts.Count > 0)
                     {
                         SetSymmetry(true);
                     }
@@ -80,11 +157,11 @@ namespace ColliderHelper
                     break;
                 case RendererState.Off:
                     // off->on
-                    if (this.part.symmetryCounterparts.Count > 0)
+                    if (part.symmetryCounterparts.Count > 0)
                     {
-                        var onCount = this.part.symmetryCounterparts.Count(t => t.GetComponent<ModuleColliderHelper>()._state == RendererState.Active);
+                        var onCount = part.symmetryCounterparts.Count(t => t.GetComponent<ModuleColliderHelper>()._state == RendererState.Active);
 
-                        if (onCount == this.part.symmetryCounterparts.Count)
+                        if (onCount == part.symmetryCounterparts.Count)
                             SetSymmetry(true);
                         else
                             SetOn(false);
@@ -99,13 +176,13 @@ namespace ColliderHelper
 
         public void SetOn(bool symmetry)
         {
-            if (this.gameObject.GetComponent<WireframeComponent>() == null)
-                this.gameObject.AddComponent<WireframeComponent>();
+            if (gameObject.GetComponent<WireframeComponent>() == null)
+                gameObject.AddComponent<WireframeComponent>();
 
             if (_thrustArrows == null)
             {
                 ModuleEngines engineMod;
-                if (FindEngineModule(this.gameObject, out engineMod))
+                if (FindEngineModule(gameObject, out engineMod))
                 {
                     _thrustArrows = new List<ThrustArrowComponent>();
 
@@ -130,9 +207,9 @@ namespace ColliderHelper
         {
             if (recursive)
             {
-                for (var i = 0; i < this.part.symmetryCounterparts.Count; i++)
+                for (var i = 0; i < part.symmetryCounterparts.Count; i++)
                 {
-                    var component = this.part.symmetryCounterparts[i].GetComponent<ModuleColliderHelper>();
+                    var component = part.symmetryCounterparts[i].GetComponent<ModuleColliderHelper>();
 
                     component?.SetSymmetry(false);
                 }
@@ -149,15 +226,15 @@ namespace ColliderHelper
         {
             if (recursive)
             {
-                for (var i = 0; i < this.part.symmetryCounterparts.Count; i++)
+                for (var i = 0; i < part.symmetryCounterparts.Count; i++)
                 {
-                    var helperComponent = this.part.symmetryCounterparts[i].GetComponent<ModuleColliderHelper>();
+                    var helperComponent = part.symmetryCounterparts[i].GetComponent<ModuleColliderHelper>();
 
                     helperComponent?.SetOff(false);
                 }
             }
 
-            var renderComponent = this.gameObject.GetComponent<WireframeComponent>();
+            var renderComponent = gameObject.GetComponent<WireframeComponent>();
             if (renderComponent != null)
                 Destroy(renderComponent);
 
@@ -175,7 +252,7 @@ namespace ColliderHelper
             Events["ColliderHelperEvent"].guiName = "Show Collider: Off";
         }
 
-        private bool FindEngineModule(GameObject go, out ModuleEngines mod)
+        private static bool FindEngineModule(GameObject go, out ModuleEngines mod)
         {
             var engineMod = go.GetComponent<ModuleEngines>();
             if (engineMod != null)
@@ -200,6 +277,14 @@ namespace ColliderHelper
 
             mod = null;
             return false;
+        }
+
+        public void OnDestroy()
+        {
+            if (_flightMarkerComponent)
+            {
+                Destroy(_flightMarkerComponent);
+            }
         }
     }
 }

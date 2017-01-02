@@ -5,14 +5,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UI;
 using KSP.UI.Screens;
 
 using StreamWriter = System.IO.StreamWriter;
-// ReSharper disable ArrangeThisQualifier
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace ColliderHelper
@@ -36,6 +32,8 @@ namespace ColliderHelper
         private KeyCode _hotkey = KeyCode.O;
 
         private bool _defaultEnabled = true;
+
+        private static bool _flightMarkersEnabled;
 
         private static ModuleColliderHelper AddModule(Part p)
         {
@@ -312,6 +310,8 @@ namespace ColliderHelper
 
             RemoveModules();
 
+            RemoveFlightMarkers();
+
             CleanupHooks();
 
             _appButton.SetTexture(_offTexture);
@@ -326,6 +326,39 @@ namespace ColliderHelper
             GameEvents.onFlightReady.Remove(FlightReady);
             GameEvents.onGameSceneSwitchRequested.Remove(OnGameSceneSwitchRequested);
             GameEvents.onVesselLoaded.Remove(VesselLoaded);
+        }
+
+        public static bool ToggleFlightMarkers(Vessel vessel)
+        {
+            if (HighLogic.LoadedScene != GameScenes.FLIGHT) return false;
+
+            _flightMarkersEnabled = !_flightMarkersEnabled;
+
+            if (_flightMarkersEnabled)
+            {
+                vessel.gameObject.AddOrGetComponent<FlightMarkersComponent>();
+            }
+            else
+            {
+                var components = vessel.gameObject.GetComponents<FlightMarkersComponent>();
+                for (var i = 0; i < components.Length; i++)
+                {
+                    Destroy(components[i]);
+                }
+            }
+
+            return _flightMarkersEnabled;
+        }
+
+        private static void RemoveFlightMarkers()
+        {
+            var components = FindObjectsOfType<FlightMarkersComponent>();
+            for (var i = 0; i < components.Length; i++)
+            {
+                Destroy(components[i]);
+            }
+
+            _flightMarkersEnabled = false;
         }
 
         /// <summary>
