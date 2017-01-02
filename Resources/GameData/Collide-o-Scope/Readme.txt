@@ -17,6 +17,8 @@ An alternative to the action menu is to place your mouse cursor over a part and 
 
 To turn off all colliders at once move your mouse cursor so that no part is under it and press the hotkey. You may also press the application button to disable the tweakables.
 
+New in v1.1: Markers are now available in the flight scene. Use the Flight Markers tweakable to toggle on/off. Lift and body lift can be separated by toggling Combine Lift.
+
 == Notes ==
 
 - There are bugs in this mod. I am not a graphics programmer. The rendering code was written by someone else. The bugs that exist also exist in the mod where the code first appeared. These bugs are not major and the mod works as intended.
