@@ -1,3 +1,5 @@
+1.1.1.0
+		Fixed colliders and flight markers rendering when UI is hidden.
 1.1.0.0
     Added center of mass, center of thrust, center of lift, body lift, drag, and root part markers to the flight scene.
     Applied a (hopefully) more permanent fix for colliders being rendered at the wrong scale when parts are improperly scaled inside Unity. Mesh colliders are currently exempt from this fix.
