@@ -31,6 +31,11 @@ namespace ColliderHelper
         private bool _combineLift = true;
 
 
+        public void SetEnabled(bool enable)
+        {
+            _enabled = enable;
+        }
+
         public bool ToggleCombinedLift()
         {
             _combineLift = !_combineLift;

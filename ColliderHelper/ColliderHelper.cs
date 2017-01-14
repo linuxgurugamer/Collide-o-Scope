@@ -297,6 +297,8 @@ namespace ColliderHelper
             GameEvents.onFlagPlant.Add(FlagPlant);
             GameEvents.onFlightReady.Add(FlightReady);
             GameEvents.onGameSceneSwitchRequested.Add(OnGameSceneSwitchRequested);
+            GameEvents.onHideUI.Add(HideUI);
+            GameEvents.onShowUI.Add(ShowUI);
             GameEvents.onVesselLoaded.Add(VesselLoaded);
 
             _enabled = true;
@@ -325,6 +327,8 @@ namespace ColliderHelper
             GameEvents.onFlagPlant.Remove(FlagPlant);
             GameEvents.onFlightReady.Remove(FlightReady);
             GameEvents.onGameSceneSwitchRequested.Remove(OnGameSceneSwitchRequested);
+            GameEvents.onHideUI.Remove(HideUI);
+            GameEvents.onShowUI.Remove(ShowUI);
             GameEvents.onVesselLoaded.Remove(VesselLoaded);
         }
 
@@ -359,6 +363,34 @@ namespace ColliderHelper
             }
 
             _flightMarkersEnabled = false;
+        }
+
+        private static void SetVisible(bool visible)
+        {
+            var colliders = FindObjectsOfType<WireframeComponent>();
+            var markers = FindObjectsOfType<FlightMarkersComponent>();
+
+            for (var i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].SetEnabled(visible);
+            }
+
+            for (var i = 0; i < colliders.Length; i++)
+            {
+                markers[i].SetEnabled(visible);
+            }
+        } 
+
+        // ReSharper disable once InconsistentNaming
+        public void HideUI()
+        {
+            SetVisible(false);
+        }
+
+        // ReSharper disable once InconsistentNaming
+        public void ShowUI()
+        {
+            SetVisible(true);
         }
 
         /// <summary>

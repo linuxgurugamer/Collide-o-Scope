@@ -5,6 +5,13 @@ namespace ColliderHelper
 {
     public class WireframeComponent : MonoBehaviour
     {
+        private bool _enabled = true;
+
+        public void SetEnabled(bool enable)
+        {
+            _enabled = enable;
+        }
+
         public void OnRenderObject()
         {
             if (HighLogic.LoadedSceneIsFlight)
@@ -13,7 +20,8 @@ namespace ColliderHelper
                     return;
             }
 
-            DrawObjects(gameObject);
+            if(_enabled)
+                DrawObjects(gameObject);
         }
 
         private static void DrawObjects(GameObject go)
