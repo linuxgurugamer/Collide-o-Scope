@@ -50,7 +50,7 @@ namespace ColliderHelper
                 if (baseCol is BoxCollider)
                 {
                     var box = baseCol as BoxCollider;
-                    DrawTools.DrawLocalCube(box.transform, box.size * colliderScale, XKCDColors.Yellow, box.center);
+                    DrawTools.DrawLocalCube(box.transform, box.size, XKCDColors.Yellow, box.center);
                 }
                 else if (baseCol is SphereCollider)
                 {
