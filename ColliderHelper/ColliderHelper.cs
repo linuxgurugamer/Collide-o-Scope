@@ -139,6 +139,11 @@ namespace ColliderHelper
             }
         }
 
+        public void EditorUndoRedo(ShipConstruct construct)
+        {
+            AddModules();
+        }
+
         public void SettingsApplied()
         {
             if (GameSettings.ADVANCED_TWEAKABLES)
@@ -293,7 +298,9 @@ namespace ColliderHelper
 
             GameEvents.onCrewOnEva.Add(CrewOnEva);
             GameEvents.onEditorPartEvent.Add(EditorPartEvent);
+            GameEvents.onEditorRedo.Add(EditorUndoRedo);
             GameEvents.onEditorStarted.Add(EditorStarted);
+            GameEvents.onEditorUndo.Add(EditorUndoRedo);
             GameEvents.onFlagPlant.Add(FlagPlant);
             GameEvents.onFlightReady.Add(FlightReady);
             GameEvents.onGameSceneSwitchRequested.Add(OnGameSceneSwitchRequested);
@@ -323,7 +330,9 @@ namespace ColliderHelper
         {
             GameEvents.onCrewOnEva.Remove(CrewOnEva);
             GameEvents.onEditorPartEvent.Remove(EditorPartEvent);
+            GameEvents.onEditorRedo.Remove(EditorUndoRedo);
             GameEvents.onEditorStarted.Remove(EditorStarted);
+            GameEvents.onEditorUndo.Remove(EditorUndoRedo);
             GameEvents.onFlagPlant.Remove(FlagPlant);
             GameEvents.onFlightReady.Remove(FlightReady);
             GameEvents.onGameSceneSwitchRequested.Remove(OnGameSceneSwitchRequested);
