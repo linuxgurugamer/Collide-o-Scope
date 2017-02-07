@@ -1,3 +1,9 @@
+1.1.3.0
+		Hotkey will no longer activate when typing inside input fields (ship name, description, etc.)
+		Someone forgot to hook up undo/redo events! (Fixes #6)
+		Someone was letting the renderers run for every camera in the scene. That person has been sent to Vogon poetry school. (Fixes #15)
+		Incidently the fix for #15 fixes #14. The renderers will not render over the UI.
+		Fixed an Index Out of Range error.
 1.1.2.0
 		Rolled back scaling fix on box colliders.
 		Added on-screen warning about non-uniform scaling.
