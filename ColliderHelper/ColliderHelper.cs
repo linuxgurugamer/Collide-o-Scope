@@ -433,12 +433,14 @@ namespace ColliderHelper
         {
             if (!_enabled) return;
 
-            if (!Input.GetKeyDown(_hotkey)) return;
+            if (InputLockManager.IsAllLocked(ControlTypes.KEYBOARDINPUT)) return;
 
-            // TODO: Enable when KSP UI fixed
-            //var comp = EventSystem.current.currentSelectedGameObject?.GetComponent<TMP_InputField>();
-            //if (comp == null ? false : comp.isFocused)
-            //        return;
+            if (HighLogic.LoadedSceneIsEditor)
+            {
+                if (EditorLogic.fetch.NameOrDescriptionFocused()) return;
+            }
+
+            if (!Input.GetKeyDown(_hotkey)) return;
 
             if (Mouse.HoveredPart != null)
             {
