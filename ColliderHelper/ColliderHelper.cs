@@ -384,7 +384,7 @@ namespace ColliderHelper
                 colliders[i].SetEnabled(visible);
             }
 
-            for (var i = 0; i < colliders.Length; i++)
+            for (var i = 0; i < markers.Length; i++)
             {
                 markers[i].SetEnabled(visible);
             }
