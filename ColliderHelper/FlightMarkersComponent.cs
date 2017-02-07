@@ -186,6 +186,8 @@ namespace ColliderHelper
 
         public void OnRenderObject()
         {
+            if (Camera.current != Camera.main) return;
+
             if (!_enabled) return;
 
             if (MapView.MapIsEnabled || (CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.IVA))
