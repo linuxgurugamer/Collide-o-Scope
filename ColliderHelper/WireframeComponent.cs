@@ -7,7 +7,7 @@ namespace ColliderHelper
     {
         private bool _enabled = true;
 
-        private bool _scalingChecked = false;
+        private bool _scalingChecked;
 
         public void SetEnabled(bool enable)
         {
@@ -16,13 +16,15 @@ namespace ColliderHelper
 
         public void OnRenderObject()
         {
+            if (Camera.current != Camera.main) return;
+
             if (HighLogic.LoadedSceneIsFlight)
             {
                 if (MapView.MapIsEnabled || (CameraManager.Instance.currentCameraMode == CameraManager.CameraMode.IVA))
                     return;
             }
 
-            if(_enabled)
+            if (_enabled)
                 DrawObjects(gameObject);
         }
 
