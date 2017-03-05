@@ -1,9 +1,17 @@
+# **THIS MOD IS NOT SUPPORTED IN KSP 1.3PRE**
+
+# Collide-o-Scope
+
 Collide-o-Scope has one job: Assist with the creation of Kraken devices.
 
-== Installation ==
-Copy the Collide-o-Scope folder into your KSP/GameData folder.
+Okay maybe there's a tiny bit of scope creep. You also get flight markers (CoM/Lift/Drag/etc.)
 
-== Usage ==
+## Installation
+
+   Copy the Collide-o-Scope folder into your KSP/GameData folder.
+
+## Usage
+
 Collide-o-Scope is an advanced tweakable. As such your game will need Advanced Tweakables enabled. There are several places to check this:
 
 1. From the main menu go to Settings->General. Note: This will not change the option for games in progress.
@@ -19,23 +27,24 @@ To turn off all colliders at once move your mouse cursor so that no part is unde
 
 New in v1.1: Markers are now available in the flight scene. Use the Flight Markers tweakable to toggle on/off. Lift and body lift can be separated by toggling Combine Lift.
 
-== Notes ==
+## Notes
 
 - There are bugs in this mod. I am not a graphics programmer. The rendering code was written by someone else. The bugs that exist also exist in the mod where the code first appeared. These bugs are not major and the mod works as intended.
 
 - Any craft and save game written with the application active (green) will have minor amounts of information written to them. This is a KSP thing that cannot be worked around. There is no effect other than warnings in the log when these files are reloaded. Don't panic, I just want everyone to know this happens and that I looked into having it not occur.
 
-== Special Thanks ==
+## History
 
-- Squad for the awesomeness that is Kerbal Space Program.
+See the changelog.txt file or git history.
+
+## Special Thanks
+
 - DasValdez for always being inspiring and classy.
-- Muddr for for always being inspiring and bug testing.
+- Muddr for always being inspiring and bug testing.
 - Popskyy for the creativity fuel. https://popskyy.bandcamp.com/
 - Pyreliter for the mod name.
-- EJ_SA for always being inspiring and keeping those eyes hidden.
 
-== Changelog ==
-See changelog.txt
+## License
 
-== License ==
-See License.txt and the Licenses folder
+CC BY-NC-SA 4.0
+See LICENSE.md for more details.
