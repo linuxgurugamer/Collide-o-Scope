@@ -1,5 +1,3 @@
-# **THIS MOD IS NOT SUPPORTED IN KSP 1.3PRE**
-
 # Collide-o-Scope
 
 Collide-o-Scope has one job: Assist with the creation of Kraken devices.
@@ -8,7 +6,9 @@ Okay maybe there's a tiny bit of scope creep. You also get flight markers (CoM/L
 
 ## Installation
 
-   Copy the Collide-o-Scope folder into your KSP/GameData folder.
+1. !!!IMPORTANT!!! If going from KSP 1.2.2 to 1.3, delete the old Collide-o-Scope folder.
+
+2. Copy the Collide-o-Scope folder into your KSP/GameData folder.
 
 ## Usage
 
@@ -46,5 +46,4 @@ See the changelog.txt file or git history.
 
 ## License
 
-CC BY-NC-SA 4.0
-See LICENSE.md for more details.
+See License.txt for more details.
