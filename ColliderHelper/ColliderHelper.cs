@@ -4,11 +4,12 @@
 #endif
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 using KSP.UI.Screens;
 
-using StreamWriter = System.IO.StreamWriter;
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace ColliderHelper
@@ -16,14 +17,13 @@ namespace ColliderHelper
     [KSPAddon(KSPAddon.Startup.FlightAndEditor, false)]
     public class ColliderHelper : MonoBehaviour
     {
-        // ReSharper disable once InconsistentNaming
-        private const string _oldSettingsURL = "GameData/Collide-o-Scope/settings.cfg";
-        // ReSharper disable once InconsistentNaming
-        private const string SettingsURL = "GameData/Collide-o-Scope/PluginData/settings.cfg";
+        public static string ModBaseDirectory { get; private set; }
+        private static string _oldSettingsPath;
+        private static string _settingsPath;
 
         private static ApplicationLauncherButton _appButton;
-        private readonly Texture2D _offTexture = GameDatabase.Instance.GetTexture("Collide-o-Scope/Icons/AppIconOff_38", false);
-        private readonly Texture2D _onTexture = GameDatabase.Instance.GetTexture("Collide-o-Scope/Icons/AppIconOn_38", false);
+        private static Texture2D _offTexture;
+        private static Texture2D _onTexture;
 
         private static StringBuilder _sb = new StringBuilder();
 
@@ -226,17 +226,17 @@ namespace ColliderHelper
             }
         }
 
-        private void LoadSettings(string url)
+        private void LoadSettings(string path)
         {
-            if (!System.IO.File.Exists(KSPUtil.ApplicationRootPath + url))
+            if (!File.Exists(path))
             {
-                SaveSettings(url);
+                SaveSettings(path);
                 return;
             }
 
             try
             {
-                var settings = ConfigNode.Load(KSPUtil.ApplicationRootPath + url);
+                var settings = ConfigNode.Load(path);
 
                 foreach (var node in settings.GetNodes("Collide-o-ScopeSettings"))
                 {
@@ -247,19 +247,19 @@ namespace ColliderHelper
                     }
                     catch
                     {
-                        Debug.LogWarning("[CH] Error loading settings: field");
+                        Debug.LogWarning("[Collide-o-Scope] Error loading settings: field");
                         throw;
                     }
                 }
             }
             catch (Exception)
             {
-                Debug.LogWarning("[CH] Error loading settings: file");
+                Debug.LogWarning("[Collide-o-Scope] Error loading settings: file");
                 throw;
             }
         }
 
-        private void SaveSettings(string url)
+        private void SaveSettings(string path)
         {
             var settings = new ConfigNode();
             var node = new ConfigNode {name = "Collide-o-ScopeSettings"};
@@ -269,7 +269,7 @@ namespace ColliderHelper
 
             settings.AddNode(node);
 
-            settings.Save(KSPUtil.ApplicationRootPath + url, "Collide-o-Scope Settings");
+            settings.Save(path, "Collide-o-Scope Settings");
         }
 
         public void GuiApplicationLauncherReady()
@@ -407,20 +407,20 @@ namespace ColliderHelper
         /// </summary>
         private static void FixSettingsFile()
         {
-            if (!System.IO.File.Exists(KSPUtil.ApplicationRootPath + _oldSettingsURL)) return;
+            if (!File.Exists(_oldSettingsPath)) return;
 
-            var cosPath = KSPUtil.ApplicationRootPath + "GameData/Collide-o-Scope/";
+            var dataPath = Path.Combine(ModBaseDirectory, "PluginData");
 
-            if (!System.IO.Directory.Exists(cosPath + "PluginData"))
+            if (!Directory.Exists(dataPath))
             {
-                System.IO.Directory.CreateDirectory(cosPath + "PluginData");
+                Directory.CreateDirectory(dataPath);
             }
 
-            System.IO.File.Copy(cosPath + "settings.cfg", cosPath + "PluginData/settings.cfg");
+            File.Copy(_oldSettingsPath, _settingsPath);
 
-            if (System.IO.File.Exists(cosPath + "PluginData/settings.cfg"))
+            if (File.Exists(_settingsPath))
             {
-                System.IO.File.Delete(cosPath + "settings.cfg");
+                File.Delete(_oldSettingsPath);
             }
 
             Debug.Log("[Collide-o-Scope] Fixed settings.cfg location. (1.0.7)");
@@ -428,9 +428,30 @@ namespace ColliderHelper
 
         public void Awake()
         {
+            if (string.IsNullOrEmpty(ModBaseDirectory))
+            {
+                ModBaseDirectory = Path.GetDirectoryName(Assembly.GetAssembly(typeof (ColliderHelper)).Location) ??
+                                   Path.Combine(KSPUtil.ApplicationRootPath, "GameData/Collide-o-Scope");
+
+                _oldSettingsPath = Path.Combine(ModBaseDirectory, "settings.cfg");
+                _settingsPath = Path.Combine(ModBaseDirectory, "PluginData/settings.cfg");
+
+                var idx = ModBaseDirectory.IndexOf("GameData", StringComparison.Ordinal);
+                if (idx == -1)
+                {
+                    Debug.LogError("[Collide-o-Scope] Mod not installed in GameData.");
+                    return;
+                }
+
+                var relativePath = ModBaseDirectory.Substring(idx + 9).Replace('\\', '/');
+
+                _offTexture = GameDatabase.Instance.GetTexture(string.Concat(relativePath, "/Icons/AppIconOff_38"), false);
+                _onTexture = GameDatabase.Instance.GetTexture(string.Concat(relativePath, "/Icons/AppIconOn_38"), false);
+            }
+
             FixSettingsFile();
 
-            LoadSettings(SettingsURL);
+            LoadSettings(_settingsPath);
 
             GameEvents.onGUIApplicationLauncherReady.Add(GuiApplicationLauncherReady);
 
@@ -446,6 +467,7 @@ namespace ColliderHelper
 
             if (HighLogic.LoadedSceneIsEditor)
             {
+                if (EditorLogic.fetch == null) return;
                 if (EditorLogic.fetch.NameOrDescriptionFocused()) return;
             }
 
@@ -486,7 +508,7 @@ namespace ColliderHelper
 
             CleanupHooks();
 
-            SaveSettings(SettingsURL);
+            SaveSettings(_settingsPath);
         }
     }
 }
