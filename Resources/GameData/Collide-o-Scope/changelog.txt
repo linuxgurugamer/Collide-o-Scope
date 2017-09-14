@@ -1,21 +1,24 @@
+1.1.6.0
+    Patched NRE on revert to editor. (Fixes #27)
+    Added color notes to readme. (Fixes #26)
 1.1.5.0
-		IMPORTANT! Delete any past version from your game. Install this one fresh in KSP 1.3.
-		Updated dependencies for KSP 1.3.
-		Removed MiniAVC module. Version file remains. (Fixes #19)
-		Changed license to GNUPL v3.
+	IMPORTANT! Delete any past version from your game. Install this one fresh in KSP 1.3.
+	Updated dependencies for KSP 1.3.
+	Removed MiniAVC module. Version file remains. (Fixes #19)
+	Changed license to GNUPL v3.
 1.1.4.0
-		Invalidated version for KSP 1.3pre.
+	Invalidated version for KSP 1.3pre.
 1.1.3.0
-		Hotkey will no longer activate when typing inside input fields (ship name, description, etc.)
-		Someone forgot to hook up undo/redo events! (Fixes #6)
-		Someone was letting the renderers run for every camera in the scene. That person has been sent to Vogon poetry school. (Fixes #15)
-		Incidently the fix for #15 fixes #14. The renderers will not render over the UI.
-		Fixed an Index Out of Range error.
+	Hotkey will no longer activate when typing inside input fields (ship name, description, etc.)
+	Someone forgot to hook up undo/redo events! (Fixes #6)
+	Someone was letting the renderers run for every camera in the scene. That person has been sent to Vogon poetry school. (Fixes #15)
+	Incidently the fix for #15 fixes #14. The renderers will not render over the UI.
+	Fixed an Index Out of Range error.
 1.1.2.0
-		Rolled back scaling fix on box colliders.
-		Added on-screen warning about non-uniform scaling.
+	Rolled back scaling fix on box colliders.
+	Added on-screen warning about non-uniform scaling.
 1.1.1.0
-		Fixed colliders and flight markers rendering when UI is hidden.
+	Fixed colliders and flight markers rendering when UI is hidden.
 1.1.0.0
     Added center of mass, center of thrust, center of lift, body lift, drag, and root part markers to the flight scene.
     Applied a (hopefully) more permanent fix for colliders being rendered at the wrong scale when parts are improperly scaled inside Unity. Mesh colliders are currently exempt from this fix.
