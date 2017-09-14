@@ -467,6 +467,7 @@ namespace ColliderHelper
 
             if (HighLogic.LoadedSceneIsEditor)
             {
+                if (EditorLogic.fetch == null) return;
                 if (EditorLogic.fetch.NameOrDescriptionFocused()) return;
             }
 
