@@ -14,4 +14,5 @@
 * Create release tag and push to Github
 * Update Github release info and add binary
 * Update AVC information on [KSP AVC Online](http://ksp-avc.cybutek.net/?page=My_Versions)
+* Update [CurseForge](https://kerbal.curseforge.com/projects/collide-o-scope)
 * Post update in the forum thread [KSP Forums](http://forum.kerbalspaceprogram.com/index.php?/topic/149706-12-collide-o-scope-v100/)
