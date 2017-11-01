@@ -20,47 +20,6 @@ namespace ColliderHelper
         [SerializeField]
         private List<ThrustArrowComponent> _thrustArrows;
 
-        private FlightMarkersComponent _flightMarkerComponent;
-        private bool _flightMarkersEnabled;
-        private bool _flightMarkersCombinedLift = true;
-
-        [KSPEvent(guiActive = true, advancedTweakable = true, guiActiveUnfocused = true, guiActiveUncommand = true,
-            externalToEVAOnly = false, guiActiveEditor = false, unfocusedRange = 100f, guiName = "Flight Markers: Off",
-            active = true, isPersistent = false)]
-        public void ToggleFlightMarkers()
-        {
-            var modules = vessel.FindPartModulesImplementing<ModuleColliderHelper>();
-
-            if (_flightMarkersEnabled)
-            {
-                for (var i = 0; i < modules.Count; i++)
-                {
-                    modules[i].DisableFlightMarkers();
-                }
-            }
-            else
-            {
-                _flightMarkerComponent = vessel.gameObject.AddComponent<FlightMarkersComponent>();
-
-                for (var i = 0; i < modules.Count; i++)
-                {
-                    modules[i].EnableFlightMarkers();
-                }
-            }
-        }
-
-        [KSPEvent(guiActive = true, advancedTweakable = true, guiActiveUnfocused = true, guiActiveUncommand = true,
-            externalToEVAOnly = false, guiActiveEditor = false, unfocusedRange = 100f, guiName = "Combine Lift: On",
-            active = false, isPersistent = false)]
-        public void ToggleCombinedLift()
-        {
-            var modules = vessel.FindPartModulesImplementing<ModuleColliderHelper>();
-            for (var i = 0; i < modules.Count; i++)
-            {
-                modules[i].CycleCombinedLift();
-            }
-        }
-
         [KSPEvent(guiActive = true, guiActiveUnfocused = true, guiActiveUncommand = true, externalToEVAOnly = false,
             guiActiveEditor = true, unfocusedRange = 100f, guiName = "Show Collider: Off", active = true,
             advancedTweakable = true, isPersistent = false)]
@@ -98,42 +57,6 @@ namespace ColliderHelper
             }
         }
 #endif
-
-        public void EnableFlightMarkers()
-        {
-            _flightMarkersEnabled = true;
-
-            Events["ToggleCombinedLift"].active = true;
-            Events["ToggleFlightMarkers"].guiName = "Flight Markers: On";
-        }
-
-        public void DisableFlightMarkers()
-        {
-            if (_flightMarkerComponent)
-            {
-                Destroy(_flightMarkerComponent);
-                _flightMarkerComponent = null;
-            }
-
-            _flightMarkersEnabled = false;
-            _flightMarkersCombinedLift = true;
-
-            Events["ToggleCombinedLift"].active = false;
-            Events["ToggleCombinedLift"].guiName = "Combine Lift: On";
-            Events["ToggleFlightMarkers"].guiName = "Flight Markers: Off";
-        }
-
-        public void CycleCombinedLift()
-        {
-            if (_flightMarkerComponent)
-            {
-                _flightMarkerComponent.ToggleCombinedLift();
-            }
-
-            _flightMarkersCombinedLift = !_flightMarkersCombinedLift;
-
-            Events["ToggleCombinedLift"].guiName = _flightMarkersCombinedLift ? "Combine Lift: On" : "Combine Lift: Off";
-        }
 
         public void CycleState()
         {
@@ -277,14 +200,6 @@ namespace ColliderHelper
 
             mod = null;
             return false;
-        }
-
-        public void OnDestroy()
-        {
-            if (_flightMarkerComponent)
-            {
-                Destroy(_flightMarkerComponent);
-            }
         }
     }
 }

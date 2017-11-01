@@ -33,8 +33,6 @@ namespace ColliderHelper
 
         private bool _defaultEnabled = true;
 
-        private static bool _flightMarkersEnabled;
-
         private static ModuleColliderHelper AddModule(Part p)
         {
             if (!p.Modules.Contains<ModuleColliderHelper>())
@@ -319,8 +317,6 @@ namespace ColliderHelper
 
             RemoveModules();
 
-            RemoveFlightMarkers();
-
             CleanupHooks();
 
             _appButton.SetTexture(_offTexture);
@@ -341,52 +337,13 @@ namespace ColliderHelper
             GameEvents.onVesselLoaded.Remove(VesselLoaded);
         }
 
-        public static bool ToggleFlightMarkers(Vessel vessel)
-        {
-            if (HighLogic.LoadedScene != GameScenes.FLIGHT) return false;
-
-            _flightMarkersEnabled = !_flightMarkersEnabled;
-
-            if (_flightMarkersEnabled)
-            {
-                vessel.gameObject.AddOrGetComponent<FlightMarkersComponent>();
-            }
-            else
-            {
-                var components = vessel.gameObject.GetComponents<FlightMarkersComponent>();
-                for (var i = 0; i < components.Length; i++)
-                {
-                    Destroy(components[i]);
-                }
-            }
-
-            return _flightMarkersEnabled;
-        }
-
-        private static void RemoveFlightMarkers()
-        {
-            var components = FindObjectsOfType<FlightMarkersComponent>();
-            for (var i = 0; i < components.Length; i++)
-            {
-                Destroy(components[i]);
-            }
-
-            _flightMarkersEnabled = false;
-        }
-
         private static void SetVisible(bool visible)
         {
             var colliders = FindObjectsOfType<WireframeComponent>();
-            var markers = FindObjectsOfType<FlightMarkersComponent>();
 
             for (var i = 0; i < colliders.Length; i++)
             {
                 colliders[i].SetEnabled(visible);
-            }
-
-            for (var i = 0; i < markers.Length; i++)
-            {
-                markers[i].SetEnabled(visible);
             }
         } 
 

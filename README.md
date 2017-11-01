@@ -2,13 +2,13 @@
 
 Collide-o-Scope has one job: Assist with the creation of Kraken devices.
 
-Okay maybe there's a tiny bit of scope creep. You also get flight markers (CoM/Lift/Drag/etc.)
-
 ## Installation
 
 1. !!!IMPORTANT!!! If going from KSP 1.2.2 to 1.3, delete the old Collide-o-Scope folder.
 
-2. Copy the Collide-o-Scope folder into your KSP/GameData folder.
+2. !!!IMPORTANT!!! Remove KSP/GameData/Collide-o-Scope folder.
+
+3. Copy the 'Squidsoft Collective' folder into your KSP/GameData folder. (MAC USERS: If this folder already exists, move one level deeper and copy Collide-o-Scope into 'Squidsoft Collective' to prevent overwriting other mods)
 
 ## Usage
 
@@ -24,16 +24,6 @@ NOTE: You may turn on as many colliders as you wish, however this will cause per
 An alternative to the action menu is to place your mouse cursor over a part and press the assigned hotkey. The default hotkey is 'O' (capital oh) and may be changed in the PluginData/settings.cfg file.
 
 To turn off all colliders at once move your mouse cursor so that no part is under it and press the hotkey. You may also press the application button to disable the tweakables.
-
-New in v1.1: Markers are now available in the flight scene. Use the Flight Markers tweakable to toggle on/off. Lift and body lift can be separated by toggling Combine Lift.
-
-Colors are based on collider type as follows:
-
-- Yellow: Box
-- Red: Sphere
-- Green: Capsule
-- Blue: Mesh
-- Pink: Wheel
 
 ## Notes
 

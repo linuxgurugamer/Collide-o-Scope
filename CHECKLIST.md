@@ -6,7 +6,7 @@
 
 ### Build
 * Build solution in release mode
-* Create zip file from `Resources\GameData\` (Collide-o-Scope folder)
+* Create zip file from `Resources\GameData\` ('Squidsoft Collective' folder and dependencies)
 * Name the zip file `Collide-o-Scope-ksp<version>-v<major>.<minor>.<patch>.<build>.zip` (eg Collide-o-Scope-ksp1.2-v1.0.0.0.zip)
 
 ### Post-Build

@@ -7,8 +7,6 @@ namespace ColliderHelper
     {
         private bool _enabled = true;
 
-        private bool _scalingChecked;
-
         public void SetEnabled(bool enable)
         {
             _enabled = enable;
@@ -50,18 +48,6 @@ namespace ColliderHelper
                 var colliderTransformScale = baseCol.transform.lossyScale;
                 var colliderScale = Mathf.Max(Mathf.Abs(colliderTransformScale.x), Mathf.Abs(colliderTransformScale.y),
                     Mathf.Abs(colliderTransformScale.z));
-
-                if (!_scalingChecked)
-                {
-                    _scalingChecked = true;
-
-                    if (!Mathf.Approximately(colliderTransformScale.x, 1.0f) ||
-                        !Mathf.Approximately(colliderTransformScale.y, 1.0f) ||
-                        !Mathf.Approximately(colliderTransformScale.z, 1.0f))
-                    {
-                        ScreenMessages.PostScreenMessage("Non-uniform scaling detected. Results not guaranteed.", 3.0f, ScreenMessageStyle.UPPER_CENTER);
-                    }
-                }
 
                 if (baseCol is BoxCollider)
                 {
