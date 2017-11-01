@@ -1,3 +1,7 @@
+1.2.0.0
+    Removed flight markers. Feature moved to separate mod. https://github.com/DefiantZombie/FlightMarkers (Fixes #22, #18, #13)
+    Moved mod to common Squidsoft Collective folder. REMOVE OLD GameData/Collide-o-Scope FOLDER!!!!!
+    Removed non-uniform scale warning. This needs to be investigated further.
 1.1.6.0
     Patched NRE on revert to editor. (Fixes #27)
     Added color notes to readme. (Fixes #26)
