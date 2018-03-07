@@ -1,3 +1,7 @@
+# !!!!! WARNING !!!!!
+# C-o-S will be receiving a rewrite for KSP 1.4.1. It will be switching to ModuleManager to help reduce the fragility of the code.
+# !!!!! WARNING !!!!!
+
 # Collide-o-Scope
 
 Collide-o-Scope has one job: Assist with the creation of Kraken devices.
