@@ -31,15 +31,11 @@
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\KSP\1.3-dev\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Squidsoft.KSP.Skeleton.Assembly-CSharp.1.5.0\lib\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\KSP\1.3-dev\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\packages\Squidsoft.KSP.Skeleton.Assembly-CSharp-firstpass.1.5.0\lib\Assembly-CSharp-firstpass.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Private>False</Private>
@@ -54,14 +50,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\KSP\1.3-dev\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\packages\Squidsoft.KSP.Skeleton.UnityEngine.1.5.0\lib\UnityEngine.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\KSP\1.3-dev\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\packages\Squidsoft.KSP.Skeleton.UnityEngine.UI.1.5.0\lib\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -73,13 +65,16 @@
     <Compile Include="ThrustArrowComponent.cs" />
     <Compile Include="WireframeComponent.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>call xcopy /Y "$(TargetPath)" "C:\KSP\1.3-dev\GameData\Squidsoft Collective\$(ProjectName)\"
+    <PostBuildEvent>call xcopy /Y "$(TargetPath)" "%25KSPDEV%25\GameData\Squidsoft Collective\$(ProjectName)\"
 if $(ConfigurationName) == Release call xcopy /Y "$(TargetPath)" "$(SolutionDir)Resources\GameData\Squidsoft Collective\$(ProjectName)\"
-if $(ConfigurationName) == Debug call "E:\Development\Utilities\pdb2mdb\pdb2mdb.exe" "$(TargetFileName)"
-if $(ConfigurationName) == Debug call xcopy /Y "$(TargetDir)$(TargetName).pdb" "C:\KSP\1.3-dev\GameData\Squidsoft Collective\$(ProjectName)\"
-if $(ConfigurationName) == Debug call xcopy /Y "$(TargetDir)$(TargetName).dll.mdb" "C:\KSP\1.3-dev\GameData\Squidsoft Collective\$(ProjectName)\"
+if $(ConfigurationName) == Debug call "%25DEV_PATH%25\Utilities\pdb2mdb\pdb2mdb.exe" "$(TargetFileName)"
+if $(ConfigurationName) == Debug call xcopy /Y "$(TargetDir)$(TargetName).pdb" "%25KSPDEV%25\GameData\Squidsoft Collective\$(ProjectName)\"
+if $(ConfigurationName) == Debug call xcopy /Y "$(TargetDir)$(TargetName).dll.mdb" "%25KSPDEV%25\GameData\Squidsoft Collective\$(ProjectName)\"
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
