@@ -97,6 +97,8 @@ namespace ColliderHelper
             var screenPoint1 = cam.WorldToScreenPoint(origin);
             var screenPoint2 = cam.WorldToScreenPoint(destination);
 
+            if (screenPoint1.z <= 0 || screenPoint2.z <= 0) return; // Behind us?
+
             GL.Color(color);
             GL.Vertex3(screenPoint1.x, screenPoint1.y, NearPlane);
             GL.Vertex3(screenPoint2.x, screenPoint2.y, NearPlane);
