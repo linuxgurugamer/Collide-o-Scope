@@ -4,11 +4,7 @@ Collide-o-Scope has one job: Assist with the creation of Kraken devices.
 
 ## Installation
 
-1. !!!IMPORTANT!!! If going from KSP 1.2.2 to 1.3, delete the old Collide-o-Scope folder.
-
-2. !!!IMPORTANT!!! Remove KSP/GameData/Collide-o-Scope folder.
-
-3. Copy the 'Squidsoft Collective' folder into your KSP/GameData folder. (MAC USERS: If this folder already exists, move one level deeper and copy Collide-o-Scope into 'Squidsoft Collective' to prevent overwriting other mods)
+1. Copy the 'Squidsoft Collective' folder into your KSP/GameData folder. (MAC USERS: If this folder already exists, move one level deeper and copy Collide-o-Scope into 'Squidsoft Collective' to prevent overwriting other mods)
 
 ## Usage
 
