@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-
-namespace ColliderHelper
+﻿namespace ColliderHelper
 {
-    public static class Extensions
-    {
-    }
+	public static class Extensions
+	{
+	}
 }
