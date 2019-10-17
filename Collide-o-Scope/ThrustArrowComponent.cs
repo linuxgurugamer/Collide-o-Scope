@@ -1,11 +1,11 @@
-﻿using UnityEngine;
+using UnityEngine;
 // ReSharper disable ForCanBeConvertedToForeach
 
 namespace ColliderHelper
 {
     public class ThrustArrowComponent : MonoBehaviour
     {
-        private const string ArrowShader = "Particles/Alpha Blended";
+		private const string _arrowShader = "Legacy Shaders/Particles/Alpha Blended";
         private const int ArrowLayer = 0;
         private const float LineLength = 1.0f;
 
@@ -17,7 +17,7 @@ namespace ColliderHelper
 
         public void Awake()
         {
-            _material = new Material(Shader.Find(ArrowShader));
+			_material = new Material(Shader.Find(_arrowShader));
         }
 
         public void Start()
